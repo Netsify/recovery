@@ -101,13 +101,13 @@ class StudentController extends Controller
     public function check(IINRequest $request)
     {
         if ($request->input('IIN')) {
-            return $this->student->checkIIN($request->input('IIN')) ?
-                back()->with('message', 'Success!') : back()->with('message', config('app.iin_failed'));
+            $student = $this->student->checkIIN($request->input('IIN'));
+            return $student ? view('email') : back()->with('message', config('app.iin_failed'));
         }
         elseif ($request->input('first_name') && $request->input('middle_name') && $request->input('last_name')) {
-            return $this->student->checkName($request->input('first_name'),
-                $request->input('middle_name'), $request->input('last_name')) ?
-                back()->with('message', 'Success!') : back()->with('message', config('app.name_failed'));
+            $student = $this->student->checkFullName($request->input('first_name'),
+                $request->input('middle_name'), $request->input('last_name'));
+            return $student ? view('email') : back()->with('message', config('app.name_failed'));
         }
     }
 }
