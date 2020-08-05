@@ -12,12 +12,35 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="" method="POST">
+                        <form action="{{ route('students.check') }}" method="POST">
                             @csrf
-                            <div class="form-group">
-                                <label for="title">Введите ИИН</label>
-                                <input type="text" class="form-control" name="title" />
-                            </div>
+                            @if(session()->get('message') === (config('app.iin_failed')) ||
+                                session()->get('message') === config('app.name_failed'))
+                                <div class="form-group">
+                                    @if(session()->get('message'))
+                                        <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
+                                            {{ session()->get('message') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <label for="first_name">Введите фамилию</label>
+                                    <input type="text" class="form-control" name="first_name" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="middle_name">Введите имя</label>
+                                    <input type="text" class="form-control" name="middle_name" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="last_name">Введите отчество</label>
+                                    <input type="text" class="form-control" name="last_name" />
+                                </div>
+                            @else
+                                <div class="form-group">
+                                    <label for="IIN">Введите ИИН</label>
+                                    <input type="text" class="form-control" name="IIN" />
+                                </div>
+                            @endif
 
                             <div class="d-flex justify-content-center">
                                 <button type="submit" class="btn btn-primary">Далее</button>
@@ -33,15 +56,8 @@
                                 </div>
                             @endforeach
                         @endif
-
-                        <div class="col-sm-12">
-                            @if(session()->get('message'))
-                                <div class="alert alert-success d-flex align-items-center justify-content-center mb-2">
-                                    {{ session()->get('message') }}
-                                </div>
-                            @endif
-                        </div>
                     </div>
+
                 </div>
             </div>
         </div>

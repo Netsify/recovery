@@ -2,6 +2,13 @@
 
 return [
 
+    //custom constants
+    'iin_failed' => 'К сожалению введенный Вами ИИН не найден в системе,
+                     поэтому просим Вас ввести ФИО для нового поиска. При
+                     успешном поиске введенный ИИН будет добавлен в систему',
+    'name_failed' => 'Введенные ФИО не найдены в системе. Проверьте правильность заполнения
+                     или обратитесь в центр обслуживания студентов',
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -174,6 +181,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
 
     ],
 

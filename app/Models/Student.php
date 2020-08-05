@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,4 +18,14 @@ class Student extends Authenticatable
     protected $fillable = [
         'IIN',
     ];
+
+    public function checkIIN($IIN)
+    {
+        $this->where('IIN', $IIN)->get();
+    }
+
+    public function checkName($firstName, $middleName, $lastName)
+    {
+        $this->where('stud_fam', $firstName)->where('stud_name', $middleName)->where('stud_otch', $lastName)->get();
+    }
 }

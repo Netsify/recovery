@@ -3,9 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\IINRequest;
+use App\Models\Student;
 
 class StudentController extends Controller
 {
+    /**
+     * @var Student
+     */
+    private $student;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param Student $student
+     */
+    public function __construct(Student $student)
+    {
+        $this->student = $student;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -82,8 +98,16 @@ class StudentController extends Controller
         //
     }
 
-    public function checkIIN(IINRequest $request)
+    public function check(IINRequest $request)
     {
-
+        if ($request->input('IIN')) {
+            return $this->student->checkIIN($request->input('IIN')) ?
+                back()->with('message', 'Success!') : back()->with('message', config('app.iin_failed'));
+        }
+        elseif ($request->input('first_name') && $request->input('middle_name') && $request->input('last_name')) {
+            return $this->student->checkName($request->input('first_name'),
+                $request->input('middle_name'), $request->input('last_name')) ?
+                back()->with('message', 'Success!') : back()->with('message', config('app.name_failed'));
+        }
     }
 }
