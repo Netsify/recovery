@@ -8,11 +8,11 @@ class Student extends Model
 {
     public function getIIN($IIN)
     {
-        return $this->where('IIN', $IIN)->get();
+        return $this->where('IIN', $IIN)->first();
     }
 
     public function getFullName($firstName, $middleName, $lastName)
     {
-        return $this->where('stud_fam', $firstName)->where('stud_name', $middleName)->where('stud_otch', $lastName)->get();
+        return $this->where('stud_fam', $firstName)->where('stud_name', $middleName)->where('stud_otch', $lastName)->first();
     }
 }

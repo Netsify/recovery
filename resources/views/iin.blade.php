@@ -15,13 +15,6 @@
                         <form action="{{ route('students.check') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                @if(session()->get('message'))
-                                    <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
-                                        {{ session()->get('message') }}
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="form-group">
                                 <label for="IIN">Введите ИИН</label>
                                 <input type="text" class="form-control" name="IIN" />
                             </div>

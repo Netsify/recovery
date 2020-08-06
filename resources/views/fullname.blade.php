@@ -15,9 +15,9 @@
                         <form action="{{ route('students.check') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                @if(session()->get('message'))
+                                @if(!empty($message))
                                     <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
-                                        {{ session()->get('message') }}
+                                        {{ $message }}
                                     </div>
                                 @endif
                             </div>
@@ -33,7 +33,8 @@
                                 <label for="last_name">Введите отчество</label>
                                 <input type="text" class="form-control" name="last_name" />
                             </div>
-                            <div class="d-flex justify-content-center">
+                            <div class="d-flex justify-content-between">
+                                <a href="/" type="button" class="btn btn-success">Назад</a>
                                 <button type="submit" class="btn btn-primary">Далее</button>
                             </div>
                         </form>

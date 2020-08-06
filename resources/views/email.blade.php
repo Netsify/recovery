@@ -16,19 +16,26 @@
                         <form action="" method="POST">
                             @csrf
                             <div class="form-group">
-                                @if(session()->get('message'))
+                                @if(!empty($message))
                                     <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
-                                        {{ session()->get('message') }}
+                                        {{ $message }}
                                     </div>
                                 @endif
                             </div>
-                            <div class="form-group">
-                                <label for="email">Введите Email</label>
-                                <input type="email" class="form-control" name="email" />
-                            </div>
+
+                            @if($student->email)
+                                <div class="form-group">
+                                    Ваш Email в системе: {{ $student->email }}
+                                </div>
+                            @else
+                                <div class="form-group">
+                                    <label for="email">Введите Email</label>
+                                    <input type="email" class="form-control" name="email" />
+                                </div>
+                            @endif
 
                             <div class="d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary">Отправить</button>
+                                <button type="submit" class="btn btn-primary">Получить пароль</button>
                             </div>
                         </form>
                     </div>
