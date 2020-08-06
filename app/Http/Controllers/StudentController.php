@@ -29,7 +29,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view('index');
+        return view('iin');
     }
 
     /**
@@ -101,13 +101,13 @@ class StudentController extends Controller
     public function check(IINRequest $request)
     {
         if ($request->input('IIN')) {
-            $student = $this->student->checkIIN($request->input('IIN'));
-            return $student ? view('email') : back()->with('message', config('app.iin_failed'));
+            $student = $this->student->getIIN($request->input('IIN'));
+            return $student->isNotEmpty() ? view('email') : view('fullname')->with('message', config('app.iin_failed'));
         }
-        elseif ($request->input('first_name') && $request->input('middle_name') && $request->input('last_name')) {
-            $student = $this->student->checkFullName($request->input('first_name'),
+        else {
+            $student = $this->student->getFullName($request->input('first_name'),
                 $request->input('middle_name'), $request->input('last_name'));
-            return $student ? view('email') : back()->with('message', config('app.name_failed'));
+            return $student->isNotEmpty() ? view('email') : view('fullname')->with('message', config('app.name_failed'));
         }
     }
 }

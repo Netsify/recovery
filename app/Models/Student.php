@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    public function checkIIN($IIN)
+    public function getIIN($IIN)
     {
         return $this->where('IIN', $IIN)->get();
     }
 
-    public function checkFullName($firstName, $middleName, $lastName)
+    public function getFullName($firstName, $middleName, $lastName)
     {
         return $this->where('stud_fam', $firstName)->where('stud_name', $middleName)->where('stud_otch', $lastName)->get();
     }

@@ -7,13 +7,12 @@
                 <div class="card border-info">
                     <div class="card-header border-info">
                         <div class="d-flex align-items-center justify-content-center">
-                            Отправка пароля на почту
+                            Получение пароля в СДО
                         </div>
                     </div>
 
                     <div class="card-body">
-{{--                        {{ route('students.email') }}--}}
-                        <form action="" method="POST">
+                        <form action="{{ route('students.check') }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 @if(session()->get('message'))
@@ -23,12 +22,12 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <label for="email">Введите Email</label>
-                                <input type="email" class="form-control" name="email" />
+                                <label for="IIN">Введите ИИН</label>
+                                <input type="text" class="form-control" name="IIN" />
                             </div>
 
                             <div class="d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary">Отправить</button>
+                                <button type="submit" class="btn btn-primary">Далее</button>
                             </div>
                         </form>
                     </div>
