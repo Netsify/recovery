@@ -12,8 +12,7 @@
                     </div>
 
                     <div class="card-body">
-{{--                        {{ route('students.email') }}--}}
-                        <form action="" method="POST">
+                        <form action="{{ route('students.send') }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 @if(!empty($message))
