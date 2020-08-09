@@ -16,13 +16,13 @@
                             @csrf
                             <div class="form-group">
                                 @if(!empty($message))
-                                    <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
+                                    <div class="alert alert-success d-flex align-items-center justify-content-center mb-2">
                                         {{ $message }}
                                     </div>
                                 @endif
                             </div>
 
-                            @if($student->email)
+                            @isset($student->email)
                                 <div class="form-group">
                                     Ваш Email в системе: {{ $student->email }}
                                 </div>

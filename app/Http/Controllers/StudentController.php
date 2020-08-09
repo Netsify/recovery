@@ -100,28 +100,22 @@ class StudentController extends Controller
         //
     }
 
-    public function sendCredentials($email)
-    {
-        Mail::to($email)->send(new CredentialsSent);
-    }
-
     public function check(IINRequest $request)
     {
         if ($request->has('IIN')) {
             $student = $this->student->getIIN($request->IIN);
-            session('email', $student->email);
-            session('login', $student->login);
-            return $student ? view('email', compact('student')) : view('fullname')->with('message', config('app.iin_failed'));
-        }
-        elseif ($request->has(['first_name', 'middle_name', 'last_name'])) {
+            return $student ? view('email', compact('student')) : view('fullname')
+                ->with('message', config('app.iin_failed'));
+        } elseif ($request->has(['first_name', 'middle_name', 'last_name'])) {
             $student = $this->student->getFullName($request->first_name, $request->middle_name, $request->last_name);
-            return $student ? view('email', compact('student')) : view('fullname')->with('message', config('app.name_failed'));
+            return $student ? view('email', compact('student')) : view('fullname')
+                ->with('message', config('app.name_failed'));
         }
     }
 
-    public function sendEmail(IINRequest $request) {
-        $this->sendCredentials('n.pro-zema@mail.ru');
-        $student = $this->student->getIIN($request->old('IIN'));
-        return view('email', compact('student'))->with('message', 'Success!!!');
+    public function sendEmail()
+    {
+        Mail::to(session()->get('collection')->email)->send(new CredentialsSent(session()->get('collection')));
+        return view('thanks');
     }
 }

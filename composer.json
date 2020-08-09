@@ -17,6 +17,7 @@
         "laravel/ui": "^2.1"
     },
     "require-dev": {
+        "squizlabs/php_codesniffer": "3.*",
         "facade/ignition": "^2.0",
         "fzaninotto/faker": "^1.9.1",
         "laravel/telescope": "^3.5",
