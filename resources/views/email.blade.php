@@ -22,9 +22,9 @@
                                 @endif
                             </div>
 
-                            @isset($student->email)
+                            @if($student->email)
                                 <div class="form-group">
-                                    Ваш Email в системе: {{ $student->email }}
+                                    Ваш Email в системе: {{ $student->disguiseEmail() }}
                                 </div>
                             @else
                                 <div class="form-group">

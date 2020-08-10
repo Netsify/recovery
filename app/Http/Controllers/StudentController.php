@@ -104,18 +104,42 @@ class StudentController extends Controller
     {
         if ($request->has('IIN')) {
             $student = $this->student->getIIN($request->IIN);
-            return $student ? view('email', compact('student')) : view('fullname')
-                ->with('message', config('app.iin_failed'));
+            if ($student) {
+                $student->collectionToSession();
+                return view('email', compact('student'));
+            } else {
+                session()->put('IIN', $request->IIN);
+                return view('fullname')->with('message', config('app.iin_failed'));
+            }
         } elseif ($request->has(['first_name', 'middle_name', 'last_name'])) {
             $student = $this->student->getFullName($request->first_name, $request->middle_name, $request->last_name);
-            return $student ? view('email', compact('student')) : view('fullname')
-                ->with('message', config('app.name_failed'));
+            if ($student) {
+                $student->IIN = session('IIN');
+                $student->collectionToSession()->save();
+                return view('email', compact('student'));
+            } else {
+                return view('fullname')->with('message', config('app.name_failed'));
+            }
         }
     }
 
-    public function sendEmail()
+    public function sendEmail(IINRequest $request)
     {
-        Mail::to(session()->get('collection')->email)->send(new CredentialsSent(session()->get('collection')));
+        if ($request->has('email')) {
+            $email = $request->email;
+            session('collection')->email = $email;
+            session('collection')->save();
+        } elseif (session('collection')->email) {
+            $email = session('collection')->email;
+        }
+
+        $password = $this->student->createPassword();
+        session('collection')->stud_passwd = md5($password);
+        session('collection')->save();
+        session('collection')->stud_passwd = $password;
+
+        Mail::to($email)->send(new CredentialsSent(session('collection')));
+
         return view('thanks');
     }
 }
