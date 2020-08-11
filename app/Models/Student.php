@@ -32,27 +32,16 @@ class Student extends Model
     public function collectionToSession()
     {
         session()->put('collection', $this);
-
-        return $this;
     }
 
     public function disguiseEmail()
     {
-        return preg_replace('/(?:^|@).\K|\.[^@]*$(*SKIP)(*F)|.(?=.*?\.)/', '*', $this->email);
+        return preg_replace('/(?<=.).(?=[^@]+@)|(?<=@.).*(?=.*?\.)/', '*', $this->email);
     }
 
     public function createPassword()
     {
-        $alphabet = '1234567890';
-        $pass = array();
-        $alphaLength = strlen($alphabet) - 1;
-
-        for ($i = 0; $i < 8; $i++) {
-            $n = rand(0, $alphaLength);
-            $pass[] = $alphabet[$n];
-        }
-
-        return implode($pass);
+        return substr(str_shuffle('0123456789'), 0, 8);
     }
 
     public function getIIN($IIN)

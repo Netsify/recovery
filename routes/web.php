@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::resource('/', 'StudentController')->only(['index']);
 Route::get('/', 'StudentController@index')->name('students.index');
 
 Route::post('/', 'StudentController@check')->name('students.check');
