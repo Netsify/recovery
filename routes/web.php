@@ -17,4 +17,6 @@ Route::get('/', 'StudentController@index')->name('students.index');
 
 Route::post('/', 'StudentController@check')->name('students.check');
 
+Route::post('/documents', 'DocumentController@store')->name('documents.store');
+
 Route::post('/send', 'StudentController@sendEmail')->name('students.send');
