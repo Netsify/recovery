@@ -24,7 +24,7 @@ class IINRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'IIN' => 'required|min:12|max:12',
         ];
     }
 }

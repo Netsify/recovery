@@ -11,6 +11,16 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        @if ($errors->any())
+                            @foreach ($errors->all() as $error)
+                                <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
+                                    {{ $error }}
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+
                     <div class="card-body">
                         <form action="{{ route('students.check') }}" method="POST">
                             @csrf

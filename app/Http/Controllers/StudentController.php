@@ -36,30 +36,31 @@ class StudentController extends Controller
 
     public function check(IINRequest $request)
     {
-        if ($request->has('IIN')) {
-            $student = $this->student->getIIN($request->IIN);
-            if (!is_null($student)) {
-                $student->collectionToSession();
-                return is_null(session('collection')->stud_vizit) ? view('email.index') :
-                    view('recovery.index', compact('student'));
-            } else {
-                session(['IIN' => $request->IIN]);
-                return view('fullname')->with('message', config('app.iin_failed'));
-            }
-        } elseif ($request->has(['first_name', 'middle_name', 'last_name'])) {
-            $student = $this->student->getFullName($request->first_name, $request->middle_name, $request->last_name);
-            if (!is_null($student)) {
-                if (is_null($student->IIN)) {
-                    $student->IIN = session('IIN');
-                    $student->IIN_added_by = 2; //2 for student himself
-                    $student->save();
-                }
-                $student->collectionToSession();
-                return is_null(session('collection')->stud_vizit) ? view('email.index') : view('recovery.index');
-            } else {
-                return view('fullname')->with('message', config('app.name_failed'));
-            }
+        $student = $this->student->getIIN($request->IIN);
+
+        if (!is_null($student)) {
+            $student->collectionToSession();
+            return is_null(session('collection')->stud_vizit) ? view('email.index') :
+                view('recovery.index', compact('student'));
+        } else {
+            session(['IIN' => $request->IIN]);
+            return view('fullname')->with('message', config('app.iin_failed'));
         }
+
+//        if ($request->has(['first_name', 'middle_name', 'last_name'])) {
+//            $student = $this->student->getFullName($request->first_name, $request->middle_name, $request->last_name);
+//            if (!is_null($student)) {
+//                if (is_null($student->IIN)) {
+//                    $student->IIN = session('IIN');
+//                    $student->IIN_added_by = 2; //2 for student himself
+//                    $student->save();
+//                }
+//                $student->collectionToSession();
+//                return is_null(session('collection')->stud_vizit) ? view('email.index') : view('recovery.index');
+//            } else {
+//                return view('fullname')->with('message', config('app.name_failed'));
+//            }
+//        }
     }
 
     public function sendEmail(IINRequest $request)
