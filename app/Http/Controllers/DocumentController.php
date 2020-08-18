@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DocumentRequest;
 use App\Models\Document;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DocumentController extends Controller
 {
@@ -32,12 +31,25 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
+        $messages = [
+            'email.required' => config('app.email_validation_error'),
+            'file.required' => config('app.file_validation_error'),
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'file' => 'required|file',
+        ], $messages);
+
+        $student = session('collection');
+        if ($validator->fails()) {
+            return view('recovery.index', compact('student'))->withErrors($validator);
+        }
+
         session('collection')->email = $request->email;
         session('collection')->save();
 
-        $files = $request->file('passport');
-
-        foreach ($files as $file) {
+        foreach ($request->file('passport') as $file) {
             $this->document->saveDocument($file);
         }
 

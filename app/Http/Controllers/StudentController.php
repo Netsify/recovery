@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\IINRequest;
 use App\Models\Student;
 use App\Mail\CredentialsSent;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
@@ -34,8 +35,16 @@ class StudentController extends Controller
         return view('iin');
     }
 
-    public function check(IINRequest $request)
+    public function checkIIN(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'IIN' => 'required|digits:12',
+        ]);
+
+        if ($validator->fails()) {
+            return view('iin')->with('message', config('app.iin_validation_error'));
+        }
+
         $student = $this->student->getIIN($request->IIN);
 
         if (!is_null($student)) {
@@ -46,34 +55,46 @@ class StudentController extends Controller
             session(['IIN' => $request->IIN]);
             return view('fullname')->with('message', config('app.iin_failed'));
         }
-
-//        if ($request->has(['first_name', 'middle_name', 'last_name'])) {
-//            $student = $this->student->getFullName($request->first_name, $request->middle_name, $request->last_name);
-//            if (!is_null($student)) {
-//                if (is_null($student->IIN)) {
-//                    $student->IIN = session('IIN');
-//                    $student->IIN_added_by = 2; //2 for student himself
-//                    $student->save();
-//                }
-//                $student->collectionToSession();
-//                return is_null(session('collection')->stud_vizit) ? view('email.index') : view('recovery.index');
-//            } else {
-//                return view('fullname')->with('message', config('app.name_failed'));
-//            }
-//        }
     }
 
-    public function sendEmail(IINRequest $request)
+    public function checkFullName(Request $request)
     {
-//        if ($request->has('email')) {
-//            $email = $request->email;
-            session('collection')->email = $request->email;
-            session('collection')->save();
-//        } elseif (!is_null(session('collection')->email)) {
-//            $email = session('collection')->email;
-//        }
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string',
+            'middle_name' => 'required|string',
+            'last_name' => 'required|string',
+        ]);
 
+        if ($validator->fails()) {
+            return view('fullname')->with('message', config('app.fullname_validation_error'));
+        }
+
+        $student = $this->student->getFullName($request->first_name, $request->middle_name, $request->last_name);
+
+        if (!is_null($student)) {
+            if (is_null($student->IIN)) {
+                $student->IIN = session('IIN');
+
+                /**
+                 * IIN added by student himself
+                 */
+                $student->IIN_added_by = 2;
+
+                $student->save();
+            }
+            $student->collectionToSession();
+            return is_null(session('collection')->stud_vizit) ? view('email.index') :
+                view('recovery.index', compact('student'));
+        } else {
+            return back()->with('message', config('app.name_failed'));
+        }
+    }
+
+    public function sendEmail(Request $request)
+    {
         $password = $this->student->createPassword();
+
+        session('collection')->email = $request->email;
         session('collection')->stud_passwd = md5($password);
         session('collection')->save();
         session('collection')->stud_passwd = $password;

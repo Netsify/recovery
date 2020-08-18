@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'StudentController@index')->name('students.index');
 
-Route::post('/', 'StudentController@check')->name('students.check');
+Route::post('/', 'StudentController@checkIIN')->name('students.checkIIN');
+
+Route::post('/fullname', 'StudentController@checkFullName')->name('students.checkFullName');
 
 Route::post('/documents', 'DocumentController@store')->name('documents.store');
 

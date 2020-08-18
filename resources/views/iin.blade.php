@@ -11,19 +11,18 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        @if ($errors->any())
-                            @foreach ($errors->all() as $error)
-                                <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
-                                    {{ $error }}
-                                </div>
-                            @endforeach
-                        @endif
-                    </div>
-
                     <div class="card-body">
-                        <form action="{{ route('students.check') }}" method="POST">
+                        <form action="{{ route('students.checkIIN') }}" method="POST">
                             @csrf
+
+                            <div class="form-group">
+                                @if(!empty($message))
+                                    <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
+                                        {{ $message }}
+                                    </div>
+                                @endif
+                            </div>
+
                             <div class="form-group">
                                 <label for="IIN">Введите ИИН</label>
                                 <input type="text" class="form-control" name="IIN" />

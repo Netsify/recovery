@@ -13,9 +13,13 @@
 
                     <div class="card-body">
                         <div class="form-group">
-                            @if(!empty($message))
-                                <div class="alert alert-success d-flex align-items-center justify-content-center mb-2">
-                                    {{ $message }}
+                            @if ($messages->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($messages->all() as $message)
+                                            <li>{{ $message }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
                             @endif
                         </div>
