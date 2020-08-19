@@ -12,13 +12,11 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="form-group">
-                            @if(!empty($message))
-                                <div class="alert alert-success d-flex align-items-center justify-content-center mb-2">
-                                    {{ $message }}
-                                </div>
-                            @endif
-                        </div>
+                        @if(!empty($message))
+                            <div class="alert alert-success d-flex align-items-center justify-content-center mb-2">
+                                {{ $message }}
+                            </div>
+                        @endif
 
                         @if ($errors->any())
                             <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">

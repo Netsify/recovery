@@ -15,13 +15,11 @@
                         <form action="{{ route('students.checkIIN') }}" method="POST">
                             @csrf
 
-                            <div class="form-group">
-                                @if(!empty($message))
-                                    <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
-                                        {{ $message }}
-                                    </div>
-                                @endif
-                            </div>
+                            @if(!empty($message))
+                                <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
+                                    {{ $message }}
+                                </div>
+                            @endif
 
                             <div class="form-group">
                                 <label for="IIN">Введите ИИН</label>

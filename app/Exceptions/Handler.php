@@ -50,6 +50,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        /**
+         * added manually. need POST always not GET
+         */
+        if($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException){
+            return abort('404');
+        }
+
         return parent::render($request, $exception);
     }
 }
