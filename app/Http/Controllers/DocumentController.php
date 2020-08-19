@@ -31,19 +31,23 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        $messages = [
-            'email.required' => config('app.email_validation_error'),
-            'file.required' => config('app.file_validation_error'),
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'file' => 'required|file',
-        ], $messages);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'email' => 'required',
+                'passport' => 'required',
+            ],
+            [
+                'email.required' => config('app.email_validation_error'),
+                'passport.required' => config('app.file_validation_error')
+            ]
+        );
 
         $student = session('collection');
+        $messages = $validator->messages();
+
         if ($validator->fails()) {
-            return view('recovery.index', compact('student'))->withErrors($validator);
+            return view('recovery.index', compact('student', 'messages'));
         }
 
         session('collection')->email = $request->email;

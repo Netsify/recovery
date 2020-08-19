@@ -12,25 +12,24 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="form-group">
-                            @if ($messages->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($messages->all() as $message)
-                                            <li>{{ $message }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-                        </div>
+                        @if (!empty($messages))
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($messages->all() as $message)
+                                        <li>{{ $message }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                Ваш Email в системе: {{ $student->disguiseEmail() }}
+                                Ваш Email в системе: <strong>{{ $student->disguiseEmail() }}</strong>
                             </div>
                             <div class="form-group">
-                                Если Вы забыли пароль от учетной записи, то Вы можете отправить нам заявку
-                                на смену Email адреса, прикрепив удостоверение личности.
+                                <p>Если Вы забыли пароль от учетной записи, то Вы можете отправить нам заявку
+                                    на смену Email адреса, прикрепив удостоверение личности.</p>
+                                <p>Вы можете одновременно выбрать несколько файлов для прикрепления.</p>
                             </div>
                             <div class="form-group">
                                 <label for="email">Введите новый Email</label>
