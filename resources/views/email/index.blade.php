@@ -17,22 +17,11 @@
                                 {{ $message }}
                             </div>
                         @endif
-
-                        @if ($errors->any())
-                            <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
                         <form action="{{ route('students.send') }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="email">Введите Email</label>
-                                <input type="email" class="form-control" name="email" />
+                                <input type="email" class="form-control" name="email" required />
                             </div>
                             <div class="d-flex justify-content-center">
                                 <button type="submit" class="btn btn-primary">Получить пароль</button>

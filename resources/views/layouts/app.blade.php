@@ -18,6 +18,8 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/footer.css') }}" rel="stylesheet">
     <link href="{{ asset('css/pagination.css') }}" rel="stylesheet">
+
+    @include('layouts.metrika')
 </head>
 <body>
     <div id="app">

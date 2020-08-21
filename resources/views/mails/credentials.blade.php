@@ -2,10 +2,11 @@
 
 <p>Логин: <strong>{{ $student->stud_login }}</strong></p>
 <p>Пароль: <strong>{{ $student->stud_passwd }}</strong></p>
+<p>Сайт: sdo.kineu.kz/?login={{$student->stud_login}}</p>
 
-@component('mail::button', ['url' => 'sdo.kineu.kz'])
+@component('mail::button', ['url' => "sdo.kineu.kz/?login=$student->stud_login"])
 Перейти на сайт
 @endcomponent
 
-Спасибо, система генерации паролей
+Если письмо не попало в папку «Входящие» - пожалуйста, сообщите об этом в техническую поддержку.
 @endcomponent

@@ -33,11 +33,15 @@
                             </div>
                             <div class="form-group">
                                 <label for="email">Введите новый Email</label>
-                                <input type="email" class="form-control" name="email" />
+                                <input type="email" class="form-control" name="email" required />
                             </div>
                             <label for="document">Прикрепите удостоверение личности</label>
                             <div class="form-group">
-                                <input type="file" name="passport[]" multiple>
+                                <input type="file" name="passport[]" multiple required />
+                            </div>
+                            <div class="form-group">
+                                <label for="agreement">Согласен на обработку персональных данных</label>
+                                <input type="checkbox" name="agreement" required />
                             </div>
                             <div class="d-flex justify-content-center">
                                 <button type="submit" class="btn btn-info">Отправить</button>

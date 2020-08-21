@@ -12,7 +12,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('students.checkIIN') }}" method="POST">
+                        <form action="{{ route('students.check_iin') }}" method="POST">
                             @csrf
 
                             @if(!empty($message))
@@ -23,7 +23,7 @@
 
                             <div class="form-group">
                                 <label for="IIN">Введите ИИН</label>
-                                <input type="text" class="form-control" name="IIN" />
+                                <input type="text" class="form-control" name="IIN" required />
                             </div>
 
                             <div class="d-flex justify-content-center">
