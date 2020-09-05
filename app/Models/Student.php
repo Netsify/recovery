@@ -51,8 +51,10 @@ class Student extends Model
 
     public function getFullNameLong($firstName, $middleName, $lastName)
     {
-        return $this->where('stud_fam', $firstName)->where('stud_name', $middleName)->where('stud_otch', $lastName)
-            ->first();
+        $student = $this->where('stud_fam', $firstName)->where('stud_name', $middleName);
+        if ($lastName)
+            $student->where('stud_otch', $lastName);
+        return $student->first();
     }
 
     public function getFullNameShort($firstName, $middleName)

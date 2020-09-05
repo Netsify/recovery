@@ -59,8 +59,8 @@ class StudentController extends Controller
 
         if (!is_null($student)) {
             $student->collectionToSession();
-            return is_null(session('collection')->stud_vizit) ? view('email.index') :
-                view('recovery.index', compact('student'));
+            return is_null(session('collection')->stud_vizit) || is_null(session('collection')->email) ?
+                view('email.index') : view('recovery.index', compact('student'));
 //            return is_null(session('collection')->stud_vizit) ? redirect()->route('students.email') :
 //                redirect()->route('students.recovery');
         } else {
@@ -73,7 +73,12 @@ class StudentController extends Controller
 
     public function checkFullName(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $params = [];
+        foreach ($request->all() as $key => $value){
+            $params[$key] = kaz_translit(mb_convert_case($value, MB_CASE_TITLE, "UTF-8"));
+        }
+
+        $validator = Validator::make($params, [
             'first_name' => 'string',
             'middle_name' => 'string',
             'last_name' => 'nullable|string',
@@ -83,8 +88,11 @@ class StudentController extends Controller
             return back()->with('message', config('app.fullname_validation_error'));
         }
 
-        $student = $this->student->getFullNameLong($request->first_name, $request->middle_name, $request->last_name) ??
-            $this->student->getFullNameShort($request->first_name, $request->middle_name);
+        $student = $this->student->getFullNameLong($params['first_name'], $params['middle_name'], $params['last_name']);
+
+//        $student = $this->student->getFullNameLong($request->first_name, $request->middle_name, $request->last_name) ??
+//            $this->student->getFullNameShort($request->first_name, $request->middle_name);
+//        exit();
 
         if (!is_null($student)) {
             if (is_null($student->IIN)) {
