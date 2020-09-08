@@ -49,16 +49,12 @@ class Student extends Model
         return $this->where('IIN', $IIN)->first();
     }
 
-    public function getFullNameLong($firstName, $middleName, $lastName)
+    public function getFullName($firstName, $middleName, $lastName)
     {
-        $student = $this->where('stud_fam', $firstName)->where('stud_name', $middleName);
-        if ($lastName)
-            $student->where('stud_otch', $lastName);
+        $student = $this->where(\DB::raw('TRIM(stud_fam)'), $firstName)->where(\DB::raw('TRIM(stud_name)'), $middleName);
+        if ($lastName) {
+            $student->where(\DB::raw('TRIM(stud_otch)'), $lastName);
+        }
         return $student->first();
-    }
-
-    public function getFullNameShort($firstName, $middleName)
-    {
-        return $this->where('stud_fam', $firstName)->where('stud_name', $middleName)->first();
     }
 }

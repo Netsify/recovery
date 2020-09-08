@@ -74,7 +74,7 @@ class StudentController extends Controller
     public function checkFullName(Request $request)
     {
         $params = [];
-        foreach ($request->all() as $key => $value){
+        foreach ($request->all() as $key => $value) {
             $params[$key] = kaz_translit(mb_convert_case($value, MB_CASE_TITLE, "UTF-8"));
         }
 
@@ -88,11 +88,7 @@ class StudentController extends Controller
             return back()->with('message', config('app.fullname_validation_error'));
         }
 
-        $student = $this->student->getFullNameLong($params['first_name'], $params['middle_name'], $params['last_name']);
-
-//        $student = $this->student->getFullNameLong($request->first_name, $request->middle_name, $request->last_name) ??
-//            $this->student->getFullNameShort($request->first_name, $request->middle_name);
-//        exit();
+        $student = $this->student->getFullName($params['first_name'], $params['middle_name'], $params['last_name']);
 
         if (!is_null($student)) {
             if (is_null($student->IIN)) {

@@ -1,5 +1,7 @@
 <?php
-function kaz_translit($str){
+
+function kaz_translit($str)
+{
     $kaz = array("ә","ң","ғ","ү","ұ","қ","ө","һ","Ә","Ң","Ғ","Ү","Ұ","Қ","Ө","Һ");
     $enc = array("&#1241;",
         "&#1187;",
