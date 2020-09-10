@@ -20,6 +20,7 @@
     <link href="{{ asset('css/pagination.css') }}" rel="stylesheet">
 
     @include('layouts.metrika')
+    @include('layouts.chat')
 </head>
 <body>
     <div id="app">
