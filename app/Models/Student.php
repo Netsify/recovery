@@ -46,7 +46,7 @@ class Student extends Model
 
     public function getIIN($IIN)
     {
-        return $this->where('IIN', $IIN)->first();
+        return $this->where('IIN', $IIN)->latest($this->primaryKey)->first();
     }
 
     public function getFullName($firstName, $middleName, $lastName)
@@ -55,6 +55,6 @@ class Student extends Model
         if ($lastName) {
             $student->where(\DB::raw('TRIM(stud_otch)'), $lastName);
         }
-        return $student->first();
+        return $student->latest($this->primaryKey)->first();
     }
 }
