@@ -121,6 +121,7 @@ class StudentController extends Controller
         session('collection')->stud_passwd = md5($password);
         session('collection')->save();
         session('collection')->stud_passwd = $password;
+        session('collection')->stud_login = kaz_translit(session('collection')->stud_login, true);
 
         Mail::to($request->email)->send(new CredentialsSent(session('collection')));
 
