@@ -14,6 +14,3 @@
         };
     })();
 </script>
-<<<<<<< HEAD
-<!-- / End of Cleversite chat button -->
->>>>>>> master
