@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,7 +28,7 @@ class DocumentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -57,6 +58,6 @@ class DocumentController extends Controller
             $this->document->saveDocument($file);
         }
 
-        return view('recovery.thanks');
+        return redirect()->route('students.recovery_thanks');
     }
 }

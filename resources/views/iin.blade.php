@@ -12,18 +12,17 @@
                     </div>
 
                     <div class="card-body">
+                        @if(!empty(session('message')))
+                            <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
+                                {{ session('message') }}
+                            </div>
+                        @endif
+
                         <form action="{{ route('students.check_iin') }}" method="POST">
                             @csrf
-                            
-                            @if(!empty($message))
-                                <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
-                                    {{ $message }}
-                                </div>
-                            @endif
-
                             <div class="form-group">
                                 <label for="IIN">Введите ИИН</label>
-                                <input type="text" class="form-control" name="IIN" required />
+                                <input type="text" class="form-control" name="IIN" />
                             </div>
 
                             <div class="d-flex justify-content-center">

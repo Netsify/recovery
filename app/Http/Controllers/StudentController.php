@@ -35,7 +35,7 @@ class StudentController extends Controller
         return view('iin');
     }
 
-    public function fullName()
+    public function fullname()
     {
         return view('fullname');
     }
@@ -45,6 +45,21 @@ class StudentController extends Controller
         return view('recovery.index');
     }
 
+    public function recoveryThanks()
+    {
+        return view('recovery.thanks');
+    }
+
+    public function email()
+    {
+        return view('email.index');
+    }
+
+    public function emailThanks()
+    {
+        return view('email.thanks');
+    }
+
     public function checkIIN(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -52,6 +67,7 @@ class StudentController extends Controller
         ]);
 
         if ($validator->fails()) {
+            session()->flash('message', config('app.iin_validation_error'));
             return back()->with('message', config('app.iin_validation_error'));
         }
 
@@ -60,14 +76,12 @@ class StudentController extends Controller
         if (!is_null($student)) {
             $student->collectionToSession();
             return is_null(session('collection')->stud_vizit) || is_null(session('collection')->email) ?
-                view('email.index') : view('recovery.index', compact('student'));
-//            return is_null(session('collection')->stud_vizit) ? redirect()->route('students.email') :
-//                redirect()->route('students.recovery');
+                redirect()->route('students.email') :
+                redirect()->route('students.recovery')->with(compact('student'));
         } else {
             session(['IIN' => $request->IIN]);
-            session(['message' => config('app.iin_failed')]);
-            return view('fullname')->with('message', config('app.iin_failed'));
-//            return redirect()->route('students.full_name');
+            session()->flash('message', config('app.iin_failed'));
+            return redirect()->route('students.fullname');
         }
     }
 
@@ -79,12 +93,13 @@ class StudentController extends Controller
         }
 
         $validator = Validator::make($params, [
-            'first_name' => 'string',
-            'middle_name' => 'string',
+            'first_name' => 'required|string',
+            'middle_name' => 'required|string',
             'last_name' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
+            session()->flash('message', config('app.fullname_validation_error'));
             return back()->with('message', config('app.fullname_validation_error'));
         }
 
@@ -103,13 +118,11 @@ class StudentController extends Controller
             }
             $student->collectionToSession();
             return is_null(session('collection')->stud_vizit) || is_null(session('collection')->email) ?
-                view('email.index') : view('recovery.index', compact('student'));
-//            return is_null(session('collection')->stud_vizit) || is_null(session('collection')->email) ?
-//                redirect()->route('students.email') : redirect()->route('students.recovery');
+                redirect()->route('students.email') :
+                redirect()->route('students.recovery')->with(compact('student'));
         } else {
-            session(['message' => config('app.name_failed')]);
-//            return redirect()->route('students.full_name');
-            return view('fullname')->with('message', config('app.name_failed'));
+            session()->flash('message', config('app.name_failed'));
+            return redirect()->route('students.fullname');
         }
     }
 
@@ -125,6 +138,6 @@ class StudentController extends Controller
 
         Mail::to($request->email)->send(new CredentialsSent(session('collection')));
 
-        return view('email.thanks');
+        return redirect()->route('students.email_thanks');
     }
 }

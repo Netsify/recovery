@@ -10,7 +10,6 @@ return [
                      или обратитесь в центр обслуживания студентов.',
     'iin_validation_error' => 'Введенный ИИН должен состоять из 12 цифр',
     'fullname_validation_error' => 'Введенные ФИО должны быть корректными',
-
 //    'email_validation_error' => 'Введите корректный email адрес',
 //    'file_validation_error' => 'Прикрепите файл',
 

@@ -12,7 +12,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('students.check_full_name') }}" method="POST">
+                        <form action="{{ route('students.check_fullname') }}" method="POST">
                             @csrf
 
                             @if(session()->has('message') && empty($message))
@@ -28,11 +28,11 @@
 
                             <div class="form-group">
                                 <label for="first_name">Введите фамилию</label>
-                                <input type="text" class="form-control" name="first_name" required />
+                                <input type="text" class="form-control" name="first_name" />
                             </div>
                             <div class="form-group">
                                 <label for="middle_name">Введите имя</label>
-                                <input type="text" class="form-control" name="middle_name" required />
+                                <input type="text" class="form-control" name="middle_name" />
                             </div>
                             <div class="form-group">
                                 <label for="last_name">Введите отчество</label>

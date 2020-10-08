@@ -12,16 +12,17 @@
                     </div>
 
                     <div class="card-body">
-                        @if(!empty($message))
-                            <div class="alert alert-success d-flex align-items-center justify-content-center mb-2">
-                                {{ $message }}
+                        @if(!empty(session('message')))
+                            <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
+                                {{ session('message') }}
                             </div>
                         @endif
+
                         <form action="{{ route('students.send') }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="email">Введите Email</label>
-                                <input type="email" class="form-control" name="email" required />
+                                <input type="email" class="form-control" name="email" />
                             </div>
                             <div class="d-flex justify-content-center">
                                 <button type="submit" class="btn btn-primary">Получить пароль</button>
