@@ -1,4 +1,3 @@
-<!-- Cleversite chat button -->
 <script type='text/javascript'>
     (function() {
         var s = document['createElement']('script');
@@ -14,4 +13,3 @@
         };
     })();
 </script>
-<!-- / End of Cleversite chat button -->

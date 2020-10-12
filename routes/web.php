@@ -29,6 +29,8 @@ Route::get('/email/thanks', 'StudentController@emailThanks')->name('students.ema
 
 Route::get('/recovery', 'StudentController@recovery')->name('students.recovery');
 
+Route::get('/recovery/resend', 'StudentController@recoveryResend')->name('students.recovery_resend');
+
 Route::get('/recovery/thanks', 'StudentController@recoveryThanks')->name('students.recovery_thanks');
 
 //Route::post('/recovery', 'StudentController@checkRecovery')->name('students.check_recovery');

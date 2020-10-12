@@ -25,11 +25,6 @@ class StudentController extends Controller
         $this->student = $student;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function index()
     {
         return view('iin');
@@ -43,6 +38,11 @@ class StudentController extends Controller
     public function recovery()
     {
         return view('recovery.index');
+    }
+
+    public function recoveryResend()
+    {
+        return view('recovery.resend');
     }
 
     public function recoveryThanks()
@@ -68,19 +68,22 @@ class StudentController extends Controller
 
         if ($validator->fails()) {
             session()->flash('message', config('app.iin_validation_error'));
-            return back()->with('message', config('app.iin_validation_error'));
+
+            return back();
         }
 
         $student = $this->student->getIIN($request->IIN);
 
         if (!is_null($student)) {
             $student->collectionToSession();
+
             return is_null(session('collection')->stud_vizit) || is_null(session('collection')->email) ?
                 redirect()->route('students.email') :
-                redirect()->route('students.recovery')->with(compact('student'));
+                redirect()->route('students.recovery_resend')->with(compact('student'));
         } else {
             session(['IIN' => $request->IIN]);
             session()->flash('message', config('app.iin_failed'));
+
             return redirect()->route('students.fullname');
         }
     }
@@ -100,7 +103,8 @@ class StudentController extends Controller
 
         if ($validator->fails()) {
             session()->flash('message', config('app.fullname_validation_error'));
-            return back()->with('message', config('app.fullname_validation_error'));
+
+            return back();
         }
 
         $student = $this->student->getFullName($params['first_name'], $params['middle_name'], $params['last_name']);
@@ -117,11 +121,13 @@ class StudentController extends Controller
                 $student->save();
             }
             $student->collectionToSession();
+
             return is_null(session('collection')->stud_vizit) || is_null(session('collection')->email) ?
                 redirect()->route('students.email') :
-                redirect()->route('students.recovery')->with(compact('student'));
+                redirect()->route('students.recovery_resend')->with(compact('student'));
         } else {
             session()->flash('message', config('app.name_failed'));
+
             return redirect()->route('students.fullname');
         }
     }
@@ -130,13 +136,16 @@ class StudentController extends Controller
     {
         $password = $this->student->createPassword();
 
-        session('collection')->email = $request->email;
+        if ($request->has('email')) {
+            session('collection')->email = $request->email;
+        }
+
         session('collection')->stud_passwd = md5($password);
         session('collection')->save();
         session('collection')->stud_passwd = $password;
         session('collection')->stud_login = kaz_translit(session('collection')->stud_login, true);
 
-        Mail::to($request->email)->send(new CredentialsSent(session('collection')));
+        Mail::to(session('collection')->email)->send(new CredentialsSent(session('collection')));
 
         return redirect()->route('students.email_thanks');
     }
