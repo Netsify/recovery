@@ -51,8 +51,8 @@ class DocumentController extends Controller
 //            return view('recovery.index', compact('student', 'messages'));
 //        }
 
-        session('collection')->email = $request->email;
-        session('collection')->save();
+        session('student')->email_recovery = $request->email;
+        session('student')->save();
 
         foreach ($request->file('passport') as $file) {
             $this->document->saveDocument($file);

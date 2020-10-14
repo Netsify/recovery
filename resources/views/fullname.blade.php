@@ -26,6 +26,16 @@
                                 </div>
                             @endif
 
+                            @if ($errors->any())
+                                <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
                             <div class="form-group">
                                 <label for="first_name">Введите фамилию</label>
                                 <input type="text" class="form-control" name="first_name" />

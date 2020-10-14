@@ -24,9 +24,23 @@ class FullNameRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required',
-            'middle_name' => 'required',
-            'last_name' => 'required',
+            'first_name' => 'required|string',
+            'middle_name' => 'required|string',
+            'last_name' => 'nullable|string',
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'first_name' => 'Имя',
+            'middle_name' => 'Фамилия',
+            'last_name' => 'Отчество',
         ];
     }
 }

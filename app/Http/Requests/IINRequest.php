@@ -27,4 +27,16 @@ class IINRequest extends FormRequest
             'IIN' => 'digits:12'
         ];
     }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'IIN' => 'ИИН',
+        ];
+    }
 }

@@ -12,9 +12,13 @@
                     </div>
 
                     <div class="card-body">
-                        @if(!empty(session('message')))
+                        @if ($errors->any())
                             <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
-                                {{ session('message') }}
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
                         @endif
 

@@ -29,11 +29,6 @@ class Student extends Model
         'IIN', 'email',
     ];
 
-    public function collectionToSession()
-    {
-        session()->put('collection', $this);
-    }
-
     public function disguiseEmail()
     {
         return preg_replace('/(?<=.).(?=[^@]+@)|(?<=@.).*(?=.*?\.)/', '*', $this->email);
@@ -55,6 +50,7 @@ class Student extends Model
         if ($lastName) {
             $student->where(\DB::raw('TRIM(stud_otch)'), $lastName);
         }
+
         return $student->latest($this->primaryKey)->first();
     }
 }
