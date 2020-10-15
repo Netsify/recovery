@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmailRequest;
 use App\Http\Requests\FullNameRequest;
 use App\Http\Requests\IINRequest;
 use App\Models\Student;
 use App\Mail\CredentialsSent;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
@@ -64,16 +63,6 @@ class StudentController extends Controller
 
     public function checkIIN(IINRequest $request)
     {
-//        $validator = Validator::make($request->all(), [
-//            'IIN' => 'digits:12',
-//        ]);
-//
-//        if ($validator->fails()) {
-//            session()->flash('message', config('app.iin_validation_error'));
-//
-//            return back();
-//        }
-
         $student = $this->student->getIIN($request->IIN);
 
         if (!is_null($student)) {
@@ -95,18 +84,6 @@ class StudentController extends Controller
         foreach ($request->all() as $key => $value) {
             $params[$key] = kaz_translit(mb_convert_case($value, MB_CASE_TITLE, "UTF-8"));
         }
-
-//        $validator = Validator::make($params, [
-//            'first_name' => 'required|string',
-//            'middle_name' => 'required|string',
-//            'last_name' => 'nullable|string',
-//        ]);
-//
-//        if ($validator->fails()) {
-//            session()->flash('message', config('app.fullname_validation_error'));
-//
-//            return back();
-//        }
 
         $student = $this->student->getFullName($params['first_name'], $params['middle_name'], $params['last_name']);
 
@@ -130,7 +107,7 @@ class StudentController extends Controller
         }
     }
 
-    public function sendEmail(Request $request)
+    public function sendEmail(EmailRequest $request)
     {
         $password = $this->student->createPassword();
         if ($request->has('email')) {

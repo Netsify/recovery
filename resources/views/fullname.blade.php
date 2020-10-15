@@ -15,24 +15,18 @@
                         <form action="{{ route('students.check_fullname') }}" method="POST">
                             @csrf
 
-                            @if(session()->has('message') && empty($message))
-                                <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
-                                    {{ session('message') }}
-                                </div>
-                            @endif
-                            @if(!empty($message))
-                                <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
-                                    {{ $message }}
-                                </div>
-                            @endif
-
-                            @if ($errors->any())
+                            @if ($errors->any() && empty($message))
                                 <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
                                     <ul>
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                         @endforeach
                                     </ul>
+                                </div>
+                            @endif
+                            @if(!empty($message))
+                                <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
+                                    {{ $message }}
                                 </div>
                             @endif
 
