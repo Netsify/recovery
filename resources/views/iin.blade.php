@@ -22,8 +22,7 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('students.check_iin') }}" method="POST">
-                            @csrf
+                        <form action="{{ route('students.check_iin') }}" method="GET">
                             <div class="form-group">
                                 <label for="IIN">Введите ИИН</label>
                                 <input type="text" class="form-control" name="IIN" />

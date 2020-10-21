@@ -12,10 +12,8 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('students.check_fullname') }}" method="POST">
-                            @csrf
-
-                            @if ($errors->any() && empty($message))
+                        <form action="{{ route('students.check_fullname') }}" method="GET">
+                            @if ($errors->any())
                                 <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
                                     <ul>
                                         @foreach ($errors->all() as $error)
@@ -23,10 +21,9 @@
                                         @endforeach
                                     </ul>
                                 </div>
-                            @endif
-                            @if(!empty($message))
+                            @elseif(session()->has('message'))
                                 <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
-                                    {{ $message }}
+                                     {{ session('message') }}
                                 </div>
                             @endif
 

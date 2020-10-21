@@ -15,25 +15,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'StudentController@index')->name('students.index');
 
-Route::post('/', 'StudentController@checkIIN')->name('students.check_iin');
+Route::get('/search', 'StudentController@checkIIN')->name('students.check_iin');
 
-Route::get('/fullname', 'StudentController@fullname')->name('students.fullname');
+Route::get('/newsearch', 'StudentController@checkFullName')->name('students.check_fullname');
 
-Route::post('/fullname', 'StudentController@checkFullName')->name('students.check_fullname');
+//Route::get('/email', 'StudentController@email')->name('students.email');
 
-Route::get('/email', 'StudentController@email')->name('students.email');
+//Route::get('/email/thanks', 'StudentController@emailThanks')->name('students.email_thanks');
 
-Route::post('/email', 'StudentController@checkEmail')->name('students.check_email');
+//Route::get('/recovery', 'StudentController@recovery')->name('students.recovery');
 
-Route::get('/email/thanks', 'StudentController@emailThanks')->name('students.email_thanks');
+//Route::get('/recovery/resend', 'StudentController@recoveryResend')->name('students.recovery_resend');
 
-Route::get('/recovery', 'StudentController@recovery')->name('students.recovery');
-
-Route::get('/recovery/resend', 'StudentController@recoveryResend')->name('students.recovery_resend');
-
-Route::get('/recovery/thanks', 'StudentController@recoveryThanks')->name('students.recovery_thanks');
-
-//Route::post('/recovery', 'StudentController@checkRecovery')->name('students.check_recovery');
+//Route::get('/recovery/thanks', 'StudentController@recoveryThanks')->name('students.recovery_thanks');
 
 Route::post('/documents', 'DocumentController@store')->name('documents.store');
 

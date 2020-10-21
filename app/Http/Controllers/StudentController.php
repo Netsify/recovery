@@ -31,30 +31,25 @@ class StudentController extends Controller
         return view('iin');
     }
 
-    public function fullname()
-    {
-        return view('fullname');
-    }
-
     public function recovery()
     {
         return view('recovery.index');
     }
 
-    public function recoveryResend()
-    {
-        return view('recovery.resend');
-    }
+//    public function recoveryResend()
+//    {
+//        return view('recovery.resend');
+//    }
 
     public function recoveryThanks()
     {
         return view('recovery.thanks');
     }
 
-    public function email()
-    {
-        return view('email.index');
-    }
+//    public function email()
+//    {
+//        return view('email.index');
+//    }
 
     public function emailThanks()
     {
@@ -66,15 +61,16 @@ class StudentController extends Controller
         $student = $this->student->getIIN($request->IIN);
 
         if (!is_null($student)) {
-            session(compact('student'));
+//            session(compact('student'));
 
             return is_null($student->stud_vizit) || is_null($student->email) ?
-                redirect()->route('students.email') : redirect()->route('students.recovery_resend');
+//                redirect()->route('students.email') : redirect()->route('students.recovery_resend');
+                view('email.index') : view('recovery.resend');
         } else {
             session(['IIN' => $request->IIN]);
             session()->flash('message', config('app.iin_failed'));
 
-            return redirect()->route('students.fullname');
+            return view('fullname');
         }
     }
 
@@ -96,19 +92,22 @@ class StudentController extends Controller
                 $student->IIN_added_by = 2;
                 $student->save();
             }
-            session(compact('student'));
+//            session(compact('student'));
 
             return is_null($student->stud_vizit) || is_null($student->email) ?
-                redirect()->route('students.email') : redirect()->route('students.recovery_resend');
+//                redirect()->route('students.email') : redirect()->route('students.recovery_resend');
+                view('email.index') : view('recovery.resend');
         } else {
             session()->flash('message', config('app.name_failed'));
 
-            return redirect()->route('students.fullname');
+            return view('fullname');
         }
     }
 
     public function sendEmail(EmailRequest $request)
     {
+
+
         $password = $this->student->createPassword();
         if ($request->has('email')) {
             session('student')->email = $request->email;
