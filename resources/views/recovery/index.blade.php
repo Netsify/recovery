@@ -21,7 +21,6 @@
                                 </ul>
                             </div>
                         @endif
-
                         <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">

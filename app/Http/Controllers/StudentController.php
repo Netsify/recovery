@@ -36,20 +36,10 @@ class StudentController extends Controller
         return view('recovery.index');
     }
 
-//    public function recoveryResend()
-//    {
-//        return view('recovery.resend');
-//    }
-
     public function recoveryThanks()
     {
         return view('recovery.thanks');
     }
-
-//    public function email()
-//    {
-//        return view('email.index');
-//    }
 
     public function emailThanks()
     {
@@ -58,13 +48,12 @@ class StudentController extends Controller
 
     public function checkIIN(IINRequest $request)
     {
-        $student = $this->student->getIIN($request->IIN);
+        $student = $this->student->getByIIN($request->IIN);
 
         if (!is_null($student)) {
-//            session(compact('student'));
+            session(compact('student'));
 
             return is_null($student->stud_vizit) || is_null($student->email) ?
-//                redirect()->route('students.email') : redirect()->route('students.recovery_resend');
                 view('email.index') : view('recovery.resend');
         } else {
             session(['IIN' => $request->IIN]);
@@ -81,7 +70,7 @@ class StudentController extends Controller
             $params[$key] = kaz_translit(mb_convert_case($value, MB_CASE_TITLE, "UTF-8"));
         }
 
-        $student = $this->student->getFullName($params['first_name'], $params['middle_name'], $params['last_name']);
+        $student = $this->student->getByFullName($params);
 
         if (!is_null($student)) {
             if (is_null($student->IIN)) {
@@ -92,10 +81,9 @@ class StudentController extends Controller
                 $student->IIN_added_by = 2;
                 $student->save();
             }
-//            session(compact('student'));
+            session(compact('student'));
 
             return is_null($student->stud_vizit) || is_null($student->email) ?
-//                redirect()->route('students.email') : redirect()->route('students.recovery_resend');
                 view('email.index') : view('recovery.resend');
         } else {
             session()->flash('message', config('app.name_failed'));
@@ -106,8 +94,6 @@ class StudentController extends Controller
 
     public function sendEmail(EmailRequest $request)
     {
-
-
         $password = $this->student->createPassword();
         if ($request->has('email')) {
             session('student')->email = $request->email;

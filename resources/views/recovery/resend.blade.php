@@ -21,8 +21,7 @@
                                 </ul>
                             </div>
                         @endif
-
-                        <form action="{{ route('students.send') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('students.send') }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 Ваш Email в системе: <strong>{{ session('student')->disguiseEmail() }}</strong>

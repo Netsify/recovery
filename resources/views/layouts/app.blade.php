@@ -14,13 +14,17 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/cleversite.js') }}" defer></script>
+    <script src="{{ asset('js/metrika.js') }}" defer></script>
+    <noscript>
+        <div>
+            <img src="https://mc.yandex.ru/watch/66596443" style="position:absolute; left:-9999px;" alt="" />
+        </div>
+    </noscript>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/footer.css') }}" rel="stylesheet">
     <link href="{{ asset('css/pagination.css') }}" rel="stylesheet">
-
-    @include('layouts.metrika')
-    @include('layouts.chat')
 </head>
 <body>
     <div id="app">

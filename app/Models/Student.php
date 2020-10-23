@@ -39,16 +39,17 @@ class Student extends Model
         return substr(str_shuffle('0123456789'), 0, 8);
     }
 
-    public function getIIN($IIN)
+    public function getByIIN($IIN)
     {
         return $this->where('IIN', $IIN)->latest($this->primaryKey)->first();
     }
 
-    public function getFullName($firstName, $middleName, $lastName)
+    public function getByFullName($fullName)
     {
-        $student = $this->where(\DB::raw('TRIM(stud_fam)'), $firstName)->where(\DB::raw('TRIM(stud_name)'), $middleName);
-        if ($lastName) {
-            $student->where(\DB::raw('TRIM(stud_otch)'), $lastName);
+        $student = $this->where(\DB::raw('TRIM(stud_fam)'), $fullName['first_name'])
+                        ->where(\DB::raw('TRIM(stud_name)'), $fullName['middle_name']);
+        if (isset($fullName['last_name'])) {
+            $student->where(\DB::raw('TRIM(stud_otch)'), $fullName['last_name']);
         }
 
         return $student->latest($this->primaryKey)->first();

@@ -26,7 +26,7 @@ class FullNameRequest extends FormRequest
         return [
             'first_name' => 'required|string',
             'middle_name' => 'required|string',
-            'last_name' => 'nullable|string',
+            'last_name' => 'sometimes|required|string',
         ];
     }
 

@@ -21,7 +21,6 @@
                                 </ul>
                             </div>
                         @endif
-
                         <form action="{{ route('students.check_iin') }}" method="GET">
                             <div class="form-group">
                                 <label for="IIN">Введите ИИН</label>
