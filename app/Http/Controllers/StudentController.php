@@ -31,11 +31,6 @@ class StudentController extends Controller
         return view('iin');
     }
 
-    public function recovery()
-    {
-        return view('recovery.index');
-    }
-
     public function recoveryThanks()
     {
         return view('recovery.thanks');
@@ -54,7 +49,8 @@ class StudentController extends Controller
             session(compact('student'));
 
             return is_null($student->stud_vizit) || is_null($student->email) ?
-                view('email.index') : view('recovery.resend');
+                view('email.index') :
+                view('recovery.resend', compact('student'));
         } else {
             session(['IIN' => $request->IIN]);
             session()->flash('message', config('app.iin_failed'));
@@ -84,7 +80,8 @@ class StudentController extends Controller
             session(compact('student'));
 
             return is_null($student->stud_vizit) || is_null($student->email) ?
-                view('email.index') : view('recovery.resend');
+                view('email.index') :
+                view('recovery.resend', compact('student'));
         } else {
             session()->flash('message', config('app.name_failed'));
 
