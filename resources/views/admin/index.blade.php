@@ -14,16 +14,20 @@
                                     <th scope="col">ИИН</th>
                                     <th scope="col">Почта</th>
                                     <th scope="col">Документы</th>
+                                    <th scope="col">Дата</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($students as $student)
+                                @foreach($documents as $document)
                                     <tr align="center">
-                                        <th scope="row">{{$student->stud_id}}</th>
-                                        <td>{{$student->stud_login}}</td>
-                                        <td>{{$student->IIN}}</td>
-                                        <td>{{$student->course}}</td>
-                                        <td>{{$student->email}}</td>
+                                        <td>{{ $document->stud_id }}</td>
+                                        <td>{{ $document->student->getFullName() }}</td>
+                                        <td>{{ $document->student->IIN }}</td>
+                                        <td>{{ $document->student->email }}</td>
+                                        <td>
+                                            <a href="{{ $document->path }}" download="{{ $document->path }}">Скачать</a>
+                                        </td>
+                                        <td>{{ $document->created_at }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

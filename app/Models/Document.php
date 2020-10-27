@@ -15,6 +15,11 @@ class Document extends Model
         'stud_id', 'path', 'name'
     ];
 
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'stud_id', 'stud_id');
+    }
+
     /**
      * Save a document.
      *

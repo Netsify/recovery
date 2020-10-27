@@ -2,11 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    /**
+     * @var Document
+     */
+    private $document;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param Document $document
+     */
+    public function __construct(Document $document)
+    {
+        $this->document = $document;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +30,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.index');
+        $documents = $this->document->all();
+
+        return view('admin.index', compact('documents'));
     }
 
     /**
