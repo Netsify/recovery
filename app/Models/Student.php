@@ -32,7 +32,12 @@ class Student extends Model
 
     public function specialty()
     {
-        return $this->hasOne(Specialty::class);
+        return $this->hasOne(Specialty::class, 'spec_id', 'stud_spec');
+    }
+
+    public function educationForm()
+    {
+        return $this->hasOne(EducationForm::class, 'id', 'id_education_form');
     }
 
     public function disguiseEmail()
@@ -68,7 +73,7 @@ class Student extends Model
             $fullname .= ' ' . $this->stud_otch;
         }
 
-        return $fullname;
+        return kaz_translit($fullname, true);
     }
 
     public function getGroup()

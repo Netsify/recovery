@@ -25,9 +25,9 @@
                                 <tr align="center">
                                     <td>{{ $student->getFullName() }}</th>
                                     <td>{{ $student->getGroup() }}</th>
-                                    {{--                                    <td>{{$student->IIN}}</td>--}}
-                                    {{--                                    <td>{{$student->course}}</td>--}}
-                                    {{--                                    <td>{{$student->email}}</td>--}}
+                                    <td>{{ $student->specialty->getFullSpecialty() }}</th>
+                                    <td>{{ $student->educationform->name }}</th>
+                                    <td>{{ $student->stud_post }}</th>
                                 </tr>
                             </tbody>
                         </table>
