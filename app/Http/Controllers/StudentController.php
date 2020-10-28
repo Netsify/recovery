@@ -81,7 +81,7 @@ class StudentController extends Controller
 
             return is_null($student->stud_vizit) || is_null($student->email) ?
                 view('email.index') :
-                view('recovery.resend', compact('student'));
+                view('recovery.index', compact('student'));
         } else {
             session()->flash('message', config('app.name_failed'));
 

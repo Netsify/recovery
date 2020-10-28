@@ -25,7 +25,7 @@
                                         <td>{{ $document->student->IIN }}</td>
                                         <td>{{ $document->student->email }}</td>
                                         <td>
-                                            <a href="{{ $document->path }}" download="{{ $document->path }}">Скачать</a>
+                                            <a href="{{ $document->path }}" download="{{ $document->name }}">{{ $document->name }}</a>
                                         </td>
                                         <td>{{ $document->created_at }}</td>
                                     </tr>

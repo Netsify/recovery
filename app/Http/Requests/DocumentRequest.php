@@ -25,7 +25,7 @@ class DocumentRequest extends FormRequest
     {
         return [
             'email' => 'required|email',
-            'passport' => 'required|image',
+            'passport.*' => 'required|image',
         ];
     }
 

@@ -57,11 +57,12 @@ class Student extends Model
 
     public function getByFullName($fullName)
     {
-        $student = $this->where(DB::raw('TRIM(stud_fam)'), $fullName['first_name'])
-                        ->where(DB::raw('TRIM(stud_name)'), $fullName['middle_name']);
-        if (isset($fullName['last_name'])) {
-            $student->where(DB::raw('TRIM(stud_otch)'), $fullName['last_name']);
+        if (!isset($fullName['last_name'])) {
+            $fullName['last_name'] = null;
         }
+        $student = $this->where(DB::raw('TRIM(stud_fam)'), $fullName['first_name'])
+                        ->where(DB::raw('TRIM(stud_name)'), $fullName['middle_name'])
+                        ->where(DB::raw('TRIM(stud_otch)'), $fullName['last_name']);
 
         return $student->latest($this->primaryKey)->first();
     }

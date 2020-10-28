@@ -12,12 +12,12 @@ class Document extends Model
      * @var array
      */
     protected $fillable = [
-        'stud_id', 'path', 'name'
+        'student_id', 'path', 'name'
     ];
 
     public function student()
     {
-        return $this->belongsTo(Student::class, 'stud_id', 'stud_id');
+        return $this->belongsTo(Student::class, 'student_id', 'stud_id');
     }
 
     /**
@@ -29,9 +29,9 @@ class Document extends Model
     public function saveDocument($file)
     {
         $this->create([
-            'stud_id' => session('collection')->stud_id,
+            'student_id' => session('student')->stud_id,
             'path' => $file->store('passports', 'public'),
-            'name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+            'name' => $file->getClientOriginalName(),
         ])->save();
     }
 }
