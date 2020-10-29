@@ -28,9 +28,11 @@ class Document extends Model
      */
     public function saveDocument($file)
     {
+        $storedPath = $file->store('passports', 'public');
+
         $this->create([
             'student_id' => session('student')->stud_id,
-            'path' => $file->store('passports', 'public'),
+            'path' => $storedPath,
             'name' => $file->getClientOriginalName(),
         ])->save();
     }

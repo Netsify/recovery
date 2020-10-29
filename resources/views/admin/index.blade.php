@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-10">
+            <div class="col-md-14">
                 <div class="card">
                     <div class="card-body">
                         <table class="table">
@@ -12,7 +12,8 @@
                                     <th scope="col">id</th>
                                     <th scope="col">ФИО</th>
                                     <th scope="col">ИИН</th>
-                                    <th scope="col">Почта</th>
+                                    <th scope="col">Email в СДО</th>
+                                    <th scope="col">Запрашиваемый Email</th>
                                     <th scope="col">Документы</th>
                                     <th scope="col">Дата</th>
                                 </tr>
@@ -20,10 +21,11 @@
                             <tbody>
                                 @foreach($documents as $document)
                                     <tr align="center">
-                                        <td>{{ $document->stud_id }}</td>
+                                        <td>{{ $document->student_id }}</td>
                                         <td>{{ $document->student->getFullName() }}</td>
                                         <td>{{ $document->student->IIN }}</td>
                                         <td>{{ $document->student->email }}</td>
+                                        <td>{{ $document->student->email_recovery }}</td>
                                         <td>
                                             <a href="{{ $document->path }}" download="{{ $document->name }}">{{ $document->name }}</a>
                                         </td>

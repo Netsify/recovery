@@ -55,8 +55,9 @@
                             <div class="form-group">
                                 Ваш Email в системе: <strong>{{ $student->disguiseEmail() }}</strong>
                             </div>
-                            <div class="d-flex justify-content-center">
+                            <div class="d-flex justify-content-between">
                                 <button type="submit" class="btn btn-info">Отправить</button>
+{{--                                <a href="{{ route('students.recovery') }}" class="btn btn-success">Заявка на смену почты</a>--}}
                             </div>
                         </form>
                     </div>

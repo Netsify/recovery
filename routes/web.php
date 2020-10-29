@@ -19,6 +19,8 @@ Route::get('/search', 'StudentController@checkIIN')->name('students.check_iin');
 
 Route::get('/newsearch', 'StudentController@checkFullName')->name('students.check_fullname');
 
+Route::get('/recovery', 'StudentController@recovery')->name('students.recovery');
+
 Route::get('/recovery/thanks', 'StudentController@recoveryThanks')->name('students.recovery_thanks');
 
 Route::get('/email/thanks', 'StudentController@emailThanks')->name('students.email_thanks');
@@ -27,4 +29,4 @@ Route::post('/documents', 'DocumentController@store')->name('documents.store');
 
 Route::post('/send', 'StudentController@sendEmail')->name('students.send');
 
-Route::get('/admin', 'AdminController@index')->name('admin.index');
+//Route::get('/admin', 'AdminController@index')->name('admin.index');
