@@ -33,7 +33,6 @@
                         </table>
                     </div>
                 </div>
-
                 <div class="card border-info">
                     <div class="card-header border-info">
                         <div class="d-flex align-items-center justify-content-center">
@@ -57,7 +56,7 @@
                             </div>
                             <div class="d-flex justify-content-between">
                                 <button type="submit" class="btn btn-info">Отправить</button>
-{{--                                <a href="{{ route('students.recovery') }}" class="btn btn-success">Заявка на смену почты</a>--}}
+                                <a href="{{ route('students.recovery') }}" class="btn btn-success">Заявка на смену почты</a>
                             </div>
                         </form>
                     </div>

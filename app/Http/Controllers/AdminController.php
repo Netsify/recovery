@@ -30,7 +30,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $documents = $this->document->all();
+        $documents = $this->document->with('student')->get();
 
         return view('admin.index', compact('documents'));
     }

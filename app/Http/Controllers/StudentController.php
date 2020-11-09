@@ -56,7 +56,7 @@ class StudentController extends Controller
             session(compact('student'));
 
             return is_null($student->stud_vizit) || is_null($student->email) ?
-                view('email.index') :
+                view('email.index', compact('student')) :
                 view('recovery.resend', compact('student'));
         } else {
             session(['IIN' => $request->IIN]);
@@ -78,6 +78,7 @@ class StudentController extends Controller
         if (!is_null($student)) {
             if (is_null($student->IIN)) {
                 $student->IIN = session('IIN');
+
                 /**
                  * IIN added by student himself
                  */
@@ -87,7 +88,7 @@ class StudentController extends Controller
             session(compact('student'));
 
             return is_null($student->stud_vizit) || is_null($student->email) ?
-                view('email.index') :
+                view('email.index', compact('student')) :
                 view('recovery.resend', compact('student'));
         } else {
             session()->flash('message', config('app.name_failed'));

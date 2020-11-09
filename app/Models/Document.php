@@ -26,7 +26,7 @@ class Document extends Model
      * @param string $file
      * @return void
      */
-    public function saveDocument($file)
+    public function saveDocument($file, $email)
     {
         $storedPath = $file->store('passports', 'public');
 
@@ -34,6 +34,7 @@ class Document extends Model
             'student_id' => session('student')->stud_id,
             'path' => $storedPath,
             'name' => $file->getClientOriginalName(),
+            'requested_email' => $email
         ])->save();
     }
 }

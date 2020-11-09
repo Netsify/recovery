@@ -18,6 +18,7 @@ class CreateDocumentsTable extends Migration
             $table->integer('student_id');
             $table->string('path', 100);
             $table->string('name', 50);
+            $table->string('requested_email', 100);
             $table->timestamps();
         });
     }

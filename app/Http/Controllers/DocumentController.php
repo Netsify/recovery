@@ -30,11 +30,8 @@ class DocumentController extends Controller
      */
     public function store(DocumentRequest $request)
     {
-        session('student')->email_recovery = $request->email;
-        session('student')->save();
-
         foreach ($request->file('passport') as $file) {
-            $this->document->saveDocument($file);
+            $this->document->saveDocument($file, $request->email);
         }
 
         return redirect()->route('students.recovery_thanks');

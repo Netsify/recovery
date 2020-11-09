@@ -29,4 +29,4 @@ Route::post('/documents', 'DocumentController@store')->name('documents.store');
 
 Route::post('/send', 'StudentController@sendEmail')->name('students.send');
 
-//Route::get('/admin', 'AdminController@index')->name('admin.index');
+Route::get('/admin', 'AdminController@index')->name('admin.index');
