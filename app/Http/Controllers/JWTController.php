@@ -15,7 +15,7 @@ class JWTController extends Controller
         $type = $request->get('type');
 
         $predmet = Predmet::query()->find($predmet_id);
-        $cheating_code = base64_encode($student_id . '_'. microtime(true) . '_' . $predmet_id);
+        $cheating_code = base64_encode($student_id . '_' . microtime(true) . '_' . $predmet_id);
 
         $data = [
             'name'         => "kineu",
