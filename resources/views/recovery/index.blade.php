@@ -12,11 +12,11 @@
                     </div>
 
                     <div class="card-body">
-                        @if (!empty($messages))
-                            <div class="alert alert-danger">
+                        @if ($errors->any())
+                            <div class="alert alert-danger d-flex align-items-center justify-content-center mb-2">
                                 <ul>
-                                    @foreach ($messages->all() as $message)
-                                        <li>{{ $message }}</li>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -33,11 +33,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="email">Введите новый Email</label>
-                                <input type="email" class="form-control" name="email" required />
+                                <input type="email" class="form-control" name="email" value="{{ old('email') }}" />
                             </div>
                             <label for="document">Прикрепите удостоверение личности</label>
                             <div class="form-group">
-                                <input type="file" name="passport[]" multiple required />
+                                <input type="file" name="passport[]" multiple />
                             </div>
                             <div class="form-group">
                                 <label for="agreement">Согласен на обработку персональных данных</label>

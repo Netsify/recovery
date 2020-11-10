@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmailRequest;
+use App\Http\Requests\FullNameRequest;
+use App\Http\Requests\IINRequest;
 use App\Models\Student;
 use App\Mail\CredentialsSent;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
@@ -25,66 +26,54 @@ class StudentController extends Controller
         $this->student = $student;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function index()
     {
         return view('iin');
     }
 
-    public function fullName()
-    {
-        return view('fullname');
-    }
-
     public function recovery()
     {
-        return view('recovery.index');
+        $student = session('student');
+
+        return view('recovery.index', compact('student'));
     }
 
-    public function checkIIN(Request $request)
+    public function recoveryThanks()
     {
-        $validator = Validator::make($request->all(), [
-            'IIN' => 'digits:12',
-        ]);
+        return view('recovery.thanks');
+    }
 
-        if ($validator->fails()) {
-            return back()->with('message', config('app.iin_validation_error'));
-        }
+    public function emailThanks()
+    {
+        return view('email.thanks');
+    }
 
-        $student = $this->student->getIIN($request->IIN);
+    public function checkIIN(IINRequest $request)
+    {
+        $student = $this->student->getByIIN($request->IIN);
 
         if (!is_null($student)) {
-            $student->collectionToSession();
-            return is_null(session('collection')->stud_vizit) ? view('email.index') :
-                view('recovery.index', compact('student'));
-//            return is_null(session('collection')->stud_vizit) ? redirect()->route('students.email') :
-//                redirect()->route('students.recovery');
+            session(compact('student'));
+
+            return is_null($student->stud_vizit) || is_null($student->email) ?
+                view('email.index', compact('student')) :
+                view('recovery.resend', compact('student'));
         } else {
             session(['IIN' => $request->IIN]);
-            session(['message' => config('app.iin_failed')]);
-            return view('fullname')->with('message', config('app.iin_failed'));
-//            return redirect()->route('students.full_name');
+            session()->flash('message', config('app.iin_failed'));
+
+            return view('fullname');
         }
     }
 
-    public function checkFullName(Request $request)
+    public function checkFullName(FullNameRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'string',
-            'middle_name' => 'string',
-            'last_name' => 'nullable|string',
-        ]);
-
-        if ($validator->fails()) {
-            return back()->with('message', config('app.fullname_validation_error'));
+        $params = [];
+        foreach ($request->all() as $key => $value) {
+            $params[$key] = kaz_translit(mb_convert_case($value, MB_CASE_TITLE, "UTF-8"));
         }
 
-        $student = $this->student->getFullNameLong($request->first_name, $request->middle_name, $request->last_name) ??
-            $this->student->getFullNameShort($request->first_name, $request->middle_name);
+        $student = $this->student->getByFullName($params);
 
         if (!is_null($student)) {
             if (is_null($student->IIN)) {
@@ -94,32 +83,32 @@ class StudentController extends Controller
                  * IIN added by student himself
                  */
                 $student->IIN_added_by = 2;
-
                 $student->save();
             }
-            $student->collectionToSession();
-            return is_null(session('collection')->stud_vizit) || is_null(session('collection')->email) ?
-                view('email.index') : view('recovery.index', compact('student'));
-//            return is_null(session('collection')->stud_vizit) || is_null(session('collection')->email) ?
-//                redirect()->route('students.email') : redirect()->route('students.recovery');
+            session(compact('student'));
+
+            return is_null($student->stud_vizit) || is_null($student->email) ?
+                view('email.index', compact('student')) :
+                view('recovery.resend', compact('student'));
         } else {
-            session(['message' => config('app.name_failed')]);
-//            return redirect()->route('students.full_name');
-            return view('fullname')->with('message', config('app.name_failed'));
+            session()->flash('message', config('app.name_failed'));
+
+            return view('fullname');
         }
     }
 
-    public function sendEmail(Request $request)
+    public function sendEmail(EmailRequest $request)
     {
         $password = $this->student->createPassword();
+        if ($request->has('email')) {
+            session('student')->email = $request->email;
+        }
+        session('student')->stud_passwd = $password;
+        session('student')->stud_login = kaz_translit(session('student')->stud_login, true);
+        Mail::to(session('student')->email)->send(new CredentialsSent(session('student')));
+        session('student')->stud_passwd = md5($password);
+        session('student')->save();
 
-        session('collection')->email = $request->email;
-        session('collection')->stud_passwd = md5($password);
-        session('collection')->save();
-        session('collection')->stud_passwd = $password;
-
-        Mail::to($request->email)->send(new CredentialsSent(session('collection')));
-
-        return view('email.thanks');
+        return redirect()->route('students.email_thanks');
     }
 }

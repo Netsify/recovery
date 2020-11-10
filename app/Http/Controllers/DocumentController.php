@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DocumentRequest;
 use App\Models\Document;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class DocumentController extends Controller
 {
@@ -27,36 +26,14 @@ class DocumentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(DocumentRequest $request)
     {
-//        $validator = Validator::make(
-//            $request->all(),
-//            [
-//                'email' => 'required',
-//                'passport' => 'required',
-//            ],
-//            [
-//                'email.required' => config('app.email_validation_error'),
-//                'passport.required' => config('app.file_validation_error')
-//            ]
-//        );
-//
-//        $student = session('collection');
-//        $messages = $validator->messages();
-//
-//        if ($validator->fails()) {
-//            return view('recovery.index', compact('student', 'messages'));
-//        }
-
-        session('collection')->email = $request->email;
-        session('collection')->save();
-
         foreach ($request->file('passport') as $file) {
-            $this->document->saveDocument($file);
+            $this->document->saveDocument($file, $request->email);
         }
 
-        return view('recovery.thanks');
+        return redirect()->route('students.recovery_thanks');
     }
 }
