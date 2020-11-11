@@ -3,43 +3,81 @@
 namespace App\Http\Controllers;
 
 use App\Models\Predmet;
+use App\Models\TestsType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use ReallySimpleJWT\Token;
 
 class JWTController extends Controller
 {
     public function getJWT(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'predmet' => ['required', 'integer', 'min:1'],
+            'student' => ['required', 'integer', 'min:1'],
+            'timeopen' => ['required', 'date', 'date_format:Y-m-d H:i:s'],
+            'timeclose' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:timeopen'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'message' => "Bad request"
+            ],
+                400);
+        }
+
         $predmet_id = $request->get('predmet');
         $student_id = $request->get('student');
         $type = $request->get('type');
+        $timeopen = strtotime($request->get('timeopen'));
+        $timeclose = strtotime($request->get('timeclose'));
 
         $predmet = Predmet::query()->find($predmet_id);
+        $typeTest = TestsType::query()->where(['name' => $type])->first();
+
+        if (!$predmet || !$typeTest) {
+            return response()->json(
+                [
+                    'status' => 404,
+                    'message' => "Not found"
+                ],
+                404);
+        }
+
+        $carbon = Carbon::createFromFormat('H:i:s', $typeTest->time_test);
         $cheating_code = base64_encode($student_id . '_' . microtime(true) . '_' . $predmet_id);
 
         $data = [
-            'name'         => "kineu",
-            'user_id'      => $student_id,
-            'exam_name'    => $predmet->pred_name,
-            'timeopen'     => strtotime('2020-11-01 00:00:00'),
-            'timeclose'    => strtotime('2020-12-14 23:59:59'),
-            'duration'     => 60,
-            'rules'        => [
-                'face_rec'    => true,
-                'screen'      => true,
+            'name' => "kineu",
+            'userId' => $student_id,
+            'exam_name' => $predmet->pred_name,
+            'timeopen' => $timeopen,
+            'timeclose' => $timeclose,
+            'duration' => $carbon->hour * 60 + $carbon->minute,
+            'rules' => [
+                'face_rec' => true,
+                'screen' => true,
                 'dual_screen' => true,
-                'live_chat'   => false,
-                'audio'       => false,
-                'stream'      => false,
-                'clipboard'   => false,
-                'authorize'   => false,
-                'mobile'      => false,
+                'live_chat' => false,
+                'audio' => false,
+                'stream' => false,
+                'clipboard' => false,
+                'authorize' => false,
+                'mobile' => false,
             ],
             'cheating_code' => $cheating_code,
-            'url'           => 'https://sdo.kineu.kz/newstudy/test/index.php?type=' . $type . '&disc=' . $predmet_id,
-            'submit_url'    => 'https://sdo.kineu.kz/newstudy/test/result.php'
+            'url' => 'https://sdo.kineu.kz/newstudy/test/index.php?type=' . $type . '&disc=' . $predmet_id,
+            'submit_url' => 'https://sdo.kineu.kz/newstudy/test/result.php'
         ];
 
-        return response()->json(['token' => Token::customPayload($data, 'KInEU2020@kv')], 200);
+        return response()->json(
+            [
+                'status'        => 200,
+                'token'         => Token::customPayload($data, 'KInEU2020@kv'),
+                'cheating_code' => $cheating_code
+            ],
+            200);
     }
 }
