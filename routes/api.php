@@ -18,4 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('jwt', [\App\Http\Controllers\JWTController::class, 'getJWT']);
+Route::get('jwt', [\App\Http\Controllers\JWTController::class, 'getJWT']);
