@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Predmet;
+use App\Models\Student;
 use App\Models\TestsType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,7 +12,10 @@ use ReallySimpleJWT\Token;
 
 class JWTController extends Controller
 {
-    public function getJWT(Request $request)
+    const NAME   = 'kineu';
+    const SECRET = 'KInEU2020@kv';
+
+    public function makeToken(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'predmet' => ['required', 'integer', 'min:1'],
@@ -36,8 +40,8 @@ class JWTController extends Controller
 
         $predmet = Predmet::query()->find($predmet_id);
         $typeTest = TestsType::query()->where(['name' => $type])->first();
-
-        if (!$predmet || !$typeTest) {
+        $student = Student::query()->find($student_id);
+        if (!$predmet || !$typeTest || !$student) {
             return response()->json(
                 [
                     'status' => 404,
@@ -50,34 +54,52 @@ class JWTController extends Controller
         $cheating_code = base64_encode($student_id . '_' . microtime(true) . '_' . $predmet_id);
 
         $data = [
-            'name' => "kineu",
-            'userId' => $student_id,
-            'exam_name' => $predmet->pred_name,
-            'timeopen' => $timeopen,
-            'timeclose' => $timeclose,
-            'duration' => $carbon->hour * 60 + $carbon->minute,
-            'rules' => [
-                'face_rec' => true,
-                'screen' => true,
+            'name'          => self::NAME,
+            'userId'        => $student_id,
+            'exam_name'     => $predmet->pred_name,
+            'timeopen'      => $timeopen,
+            'timeclose'     => $timeclose,
+            'duration'      => $carbon->hour * 60 + $carbon->minute,
+            'rules'         => [
+                'face_rec'    => true,
+                'screen'      => true,
                 'dual_screen' => true,
-                'live_chat' => false,
-                'audio' => false,
-                'stream' => false,
-                'clipboard' => false,
-                'authorize' => false,
-                'mobile' => false,
+                'live_chat'   => false,
+                'audio'       => false,
+                'stream'      => false,
+                'clipboard'   => false,
+                'authorize'   => false,
+                'mobile'      => false,
             ],
             'cheating_code' => $cheating_code,
             'url' => 'https://sdo.kineu.kz/newstudy/test/index.php?type=' . $type . '&disc=' . $predmet_id,
             'submit_url' => 'https://sdo.kineu.kz/newstudy/test/result.php'
         ];
 
+        $token = Token::customPayload($data, self::SECRET);
+
         return response()->json(
             [
                 'status'        => 200,
-                'token'         => Token::customPayload($data, 'KInEU2020@kv'),
+                'token'         => $token,
                 'cheating_code' => $cheating_code
             ],
             200);
+    }
+
+    public function decode($token)
+    {
+        try {
+            $payload = Token::getPayload($token, self::SECRET);
+            return response()->json([
+                'status'  => 200,
+                'payload' => $payload
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 400,
+                'message' => "Bad request"
+            ], 400);
+        }
     }
 }
