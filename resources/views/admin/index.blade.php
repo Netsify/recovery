@@ -25,11 +25,26 @@
                                         <td>{{ $document->student->getFullName() }}</td>
                                         <td>{{ $document->student->IIN }}</td>
                                         <td>{{ $document->student->email }}</td>
-                                        <td>{{ $document->student->email_recovery }}</td>
+                                        <td>{{ $document->requested_email }}</td>
                                         <td>
-                                            <a href="{{ $document->path }}" download="{{ $document->name }}">{{ $document->name }}</a>
+                                            <a href="{{ asset('/storage/' . $document->path) }}" download="{{ $document->name }}">{{ $document->name }}</a>
                                         </td>
                                         <td>{{ $document->created_at }}</td>
+                                        <td>
+                                            <form action="{{ route('admin.update', $document->student_id) }}" method="post">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="email" value="{{ $document->requested_email }}">
+                                                <button class="btn btn-danger" type="submit">Принять</button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form action="{{ route('admin.destroy', $document->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger" type="submit">Удалить</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

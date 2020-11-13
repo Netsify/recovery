@@ -3,16 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Document extends Model
 {
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'student_id', 'path', 'name'
+        'student_id', 'path', 'name', 'requested_email'
     ];
 
     public function student()

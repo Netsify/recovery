@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\Student;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -71,7 +73,7 @@ class AdminController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function edit($id)
     {
@@ -83,21 +85,30 @@ class AdminController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        dd($request->all());
+
+        $student = Student::find($id);
+        $student->email = $request->email;
+        $student->save();
+
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $document = Document::find($id);
+        $document->delete();
+
+        return back();
     }
 }
