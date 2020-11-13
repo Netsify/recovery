@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Student;
 
 class Document extends Model
 {
@@ -37,7 +38,7 @@ class Document extends Model
             'student_id' => session('student')->stud_id,
             'path' => $storedPath,
             'name' => $file->getClientOriginalName(),
-            'requested_email' => $email
+            'requested_email' => $email,
         ])->save();
     }
 }

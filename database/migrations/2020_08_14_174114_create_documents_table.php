@@ -20,6 +20,7 @@ class CreateDocumentsTable extends Migration
             $table->string('name', 50);
             $table->string('requested_email', 100);
             $table->timestamps();
+            $table->timestamp('accepted_at')->nullable();
             $table->softDeletes();
         });
     }

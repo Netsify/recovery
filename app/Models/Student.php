@@ -30,6 +30,11 @@ class Student extends Model
         'IIN', 'email',
     ];
 
+    public function documents()
+    {
+        return $this->hasMany(Document::class, 'student_id', 'stud_id');
+    }
+
     public function specialty()
     {
         return $this->hasOne(Specialty::class, 'spec_id', 'stud_spec');

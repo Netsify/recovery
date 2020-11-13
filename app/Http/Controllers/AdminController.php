@@ -32,9 +32,17 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $documents = $this->document->with('student')->get();
-
-        return view('admin.index', compact('documents'));
+        $students = $this
+            ->document
+            ->query()
+            ->whereNull('accepted_at')
+            ->groupBy('student_id')
+            ->with('student')
+            ->get()
+            ->pluck('student');
+//        dd($students);
+//        $document = Document::query()->where('student_id', 12015)->with('student')->first();
+        return view('admin.index', compact('students'));
     }
 
     /**
@@ -89,11 +97,13 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request->all());
-
-        $student = Student::find($id);
+        $student = Student::findOrFail($request->student_id);
         $student->email = $request->email;
         $student->save();
+
+        $document = Document::findOrFail($id);
+        $document->accepted_at = now();
+        $document->save();
 
         return back();
     }
@@ -106,7 +116,7 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        $document = Document::find($id);
+        $document = Document::findOrFail($id);
         $document->delete();
 
         return back();
