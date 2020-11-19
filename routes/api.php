@@ -21,3 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('jwt', [\App\Http\Controllers\JWTController::class, 'makeToken']);
 
 Route::get('jwt/decode/token/{token}', [\App\Http\Controllers\JWTController::class, 'decode']);
+
+Route::get('testing_jwt', [\App\Http\Controllers\JWTController::class, 'testing']);
