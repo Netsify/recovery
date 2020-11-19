@@ -102,4 +102,67 @@ class JWTController extends Controller
             ], 400);
         }
     }
+
+    public function testing(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'student' => ['required', 'integer', 'min:1'],
+            'timeopen' => ['required', 'date', 'date_format:Y-m-d H:i:s'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'message' => "Bad request"
+            ],
+                400);
+        }
+
+        $student_id = $request->get('student');
+        $timeopen = strtotime($request->get('timeopen'));
+        $cheating_code = base64_encode($student_id . '_' . microtime(true));
+
+        $student = Student::query()->find($student_id);
+        if (!$student) {
+            return response()->json(
+                [
+                    'status' => 404,
+                    'message' => "Not found"
+                ],
+                404);
+        }
+
+        $data = [
+            'name'          => self::NAME,
+            'userId'        => $student_id,
+            'exam_name'     => "Тестирование прокторинга",
+            'timeopen'      => $timeopen,
+            'timeclose'     => $timeopen + 60,
+            'duration'      => 60,
+            'rules'         => [
+                'face_rec'    => true,
+                'screen'      => true,
+                'dual_screen' => true,
+                'live_chat'   => false,
+                'audio'       => false,
+                'stream'      => false,
+                'clipboard'   => false,
+                'authorize'   => false,
+                'mobile'      => false,
+            ],
+            'cheating_code' => $cheating_code,
+            'url' => 'https://sdo.kineu.kz/newstudy/test/testing_proctoring.php',
+            'submit_url' => 'https://sdo.kineu.kz/newstudy/test/testing_proctoring.php'
+        ];
+
+        $token = Token::customPayload($data, self::SECRET);
+
+        return response()->json(
+            [
+                'status'        => 200,
+                'token'         => $token,
+                'cheating_code' => $cheating_code
+            ],
+            200);
+    }
 }
