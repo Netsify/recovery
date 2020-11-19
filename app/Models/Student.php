@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 class Student extends Model
@@ -30,11 +31,6 @@ class Student extends Model
         'IIN', 'email',
     ];
 
-    public function documents()
-    {
-        return $this->hasMany(Document::class, 'student_id', 'stud_id');
-    }
-
     public function specialty()
     {
         return $this->hasOne(Specialty::class, 'spec_id', 'stud_spec');
@@ -43,6 +39,14 @@ class Student extends Model
     public function educationForm()
     {
         return $this->hasOne(EducationForm::class, 'id', 'id_education_form');
+    }
+
+    /**
+     * Return the student's email changing requests
+     */
+    public function requests(): HasMany
+    {
+        return $this->hasMany(Request::class, 'student_id', 'stud_id');
     }
 
     public function disguiseEmail()

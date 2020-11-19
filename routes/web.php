@@ -29,4 +29,6 @@ Route::post('/documents', 'DocumentController@store')->name('documents.store');
 
 Route::post('/send', 'StudentController@sendEmail')->name('students.send');
 
-Route::resource('admin', 'AdminController')->only(['index', 'update', 'destroy']);
+Route::resource('admin', 'AdminController')->only(['index', 'update']);
+
+Route::delete('/admin/{student}', [\App\Http\Controllers\AdminController::class, 'destroy'])->name('admin.destroy');

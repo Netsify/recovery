@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDocumentsTable extends Migration
+class CreateAuthRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateDocumentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('documents', function (Blueprint $table) {
-            $table->id();
+        Schema::create('auth_requests', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('student_id');
-            $table->string('path', 100);
-            $table->string('name', 50);
-            $table->string('requested_email', 100);
-            $table->timestamps();
+            $table->string('email');
             $table->timestamp('accepted_at')->nullable();
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -32,6 +30,6 @@ class CreateDocumentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('auth_requests');
     }
 }

@@ -32,16 +32,11 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $students = $this
-            ->document
-            ->query()
-            ->whereNull('accepted_at')
-            ->groupBy('student_id')
-            ->with('student')
-            ->get()
-            ->pluck('student');
-//        dd($students);
-//        $document = Document::query()->where('student_id', 12015)->with('student')->first();
+        $ids = $this->document->groupBy('student_id', 'created_at')->pluck('student_id');
+        $students = Student::with(['documents' => function ($query) {
+            $query->whereNull('accepted_at');
+        }])->find($ids);
+
         return view('admin.index', compact('students'));
     }
 
@@ -111,13 +106,14 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Student
      * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Student $student)
     {
-        $document = Document::findOrFail($id);
-        $document->delete();
+        foreach ($student->documents as $document) {
+            $document->delete();
+        }
 
         return back();
     }

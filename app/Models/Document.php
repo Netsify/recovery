@@ -4,11 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Student;
 
 class Document extends Model
 {
     use SoftDeletes;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'auth_documents';
 
     /**
      * The attributes that are mass assignable.
@@ -16,13 +22,8 @@ class Document extends Model
      * @var array
      */
     protected $fillable = [
-        'student_id', 'path', 'name', 'requested_email'
+        'request_id', 'path', 'name'
     ];
-
-    public function student()
-    {
-        return $this->belongsTo(Student::class, 'student_id', 'stud_id');
-    }
 
     /**
      * Save a document.
