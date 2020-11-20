@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Auth::routes([
+    'register' => false,
+    'reset'    => false,
+    'confirm'  => false
+]);
+
 
 Route::get('/', 'StudentController@index')->name('students.index');
 
@@ -32,3 +40,11 @@ Route::post('/send', 'StudentController@sendEmail')->name('students.send');
 Route::resource('admin', 'AdminController')->only(['index', 'update']);
 
 Route::delete('/admin/{student}', [\App\Http\Controllers\AdminController::class, 'destroy'])->name('admin.destroy');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
