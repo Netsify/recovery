@@ -20,7 +20,6 @@ Auth::routes([
     'confirm'  => false
 ]);
 
-
 Route::get('/', 'StudentController@index')->name('students.index');
 
 Route::get('/search', 'StudentController@checkIIN')->name('students.check_iin');
@@ -38,13 +37,3 @@ Route::post('/documents', 'DocumentController@store')->name('documents.store');
 Route::post('/send', 'StudentController@sendEmail')->name('students.send');
 
 Route::resource('admin', 'AdminController')->only(['index', 'update']);
-
-Route::delete('/admin/{student}', [\App\Http\Controllers\AdminController::class, 'destroy'])->name('admin.destroy');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

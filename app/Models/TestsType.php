@@ -9,5 +9,10 @@ class TestsType extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'kv_tests_type';
 }

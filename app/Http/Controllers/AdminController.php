@@ -11,18 +11,12 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     /**
-     * @var Document
-     */
-    private $document;
-
-    /**
      * Create a new controller instance.
      *
-     * @param Document $document
      */
-    public function __construct(Document $document)
+    public function __construct()
     {
-        $this->document = $document;
+        $this->middleware('auth');
     }
 
     /**
@@ -32,12 +26,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $ids = $this->document->groupBy('student_id', 'created_at')->pluck('student_id');
-        $students = Student::with(['documents' => function ($query) {
-            $query->whereNull('accepted_at');
-        }])->find($ids);
-
-        return view('admin.index', compact('students'));
+        return view('admin.index');
     }
 
     /**
