@@ -21,13 +21,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <tr align="center">
-                                <td>{{ $student->getFullName() }}</th>
-                                <td>{{ $student->getGroup() }}</th>
-                                <td>{{ $student->specialty->getFullSpecialty() }}</th>
-                                <td>{{ $student->educationform->name }}</th>
-                                <td>{{ $student->stud_post }}</th>
-                            </tr>
+                                <tr align="center">
+                                    <td>{{ $fullname }}</th>
+                                    <td>{{ $group }}</th>
+                                    <td>{{ $specialty }}</th>
+                                    <td>{{ $educationForm }}</th>
+                                    <td>{{ $admissionYear }}</th>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

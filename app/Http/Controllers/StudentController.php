@@ -33,9 +33,7 @@ class StudentController extends Controller
 
     public function recovery()
     {
-        $student = session('student');
-
-        return view('recovery.index', compact('student'));
+        return view('recovery.index', ['disguisedEmail' => $this->student->disguiseEmail()]);
     }
 
     public function recoveryThanks()
@@ -55,9 +53,15 @@ class StudentController extends Controller
         if (!is_null($student)) {
             session(compact('student'));
 
-            return is_null($student->stud_vizit) || is_null($student->email) ?
-                view('email.index', compact('student')) :
-                view('recovery.resend', compact('student'));
+            return is_null($student->stud_vizit) || is_null($student->email)
+                ? view('email.index', [
+                    'fullName' => $student->getFullName(),
+                    'group' => $student->getGroup(),
+                    'specialty' => $student->specialty->getFullSpecialty(),
+                    'educationForm' => $student->educationform->name,
+                    'admissionYear' => $student->stud_post
+                ])
+                : view('recovery.resend', compact('student'));
         } else {
             session(['IIN' => $request->IIN]);
             session()->flash('message', config('app.iin_failed'));
@@ -104,7 +108,7 @@ class StudentController extends Controller
             session('student')->email = $request->email;
         }
         session('student')->stud_passwd = $password;
-        session('student')->stud_login = kaz_translit(session('student')->stud_login, true);
+        session('student')->stud_login = kaz_translit(session('student')->stud_login,true);
         Mail::to(session('student')->email)->send(new CredentialsSent(session('student')));
         session('student')->stud_passwd = md5($password);
         session('student')->save();
