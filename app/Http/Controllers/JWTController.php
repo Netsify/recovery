@@ -137,8 +137,8 @@ class JWTController extends Controller
             'userId'        => $student_id,
             'exam_name'     => "Тестирование прокторинга",
             'timeopen'      => $timeopen,
-            'timeclose'     => $timeopen + 60,
-            'duration'      => 60,
+            'timeclose'     => $timeopen + 900, // 15 минут, Ваня, чтобы успели воткнуть всё оборудование
+            'duration'      => 1, // 1 минута, Ваня
             'rules'         => [
                 'face_rec'    => true,
                 'screen'      => true,
