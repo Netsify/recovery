@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Predmet;
+use App\Models\ProctoringRule;
 use App\Models\Student;
 use App\Models\TestsType;
 use Carbon\Carbon;
@@ -53,6 +54,8 @@ class JWTController extends Controller
         $carbon = Carbon::createFromFormat('H:i:s', $typeTest->time_test);
         $cheating_code = base64_encode($student_id . '_' . microtime(true) . '_' . $predmet_id);
 
+        $rules = ProctoringRule::all()->toArray();
+
         $data = [
             'name'          => self::NAME,
             'userId'        => $student_id,
@@ -60,17 +63,7 @@ class JWTController extends Controller
             'timeopen'      => $timeopen,
             'timeclose'     => $timeclose,
             'duration'      => $carbon->hour * 60 + $carbon->minute,
-            'rules'         => [
-                'face_rec'    => true,
-                'screen'      => true,
-                'dual_screen' => true,
-                'live_chat'   => false,
-                'audio'       => true,
-                'stream'      => true,
-                'clipboard'   => true,
-                'authorize'   => true,
-                'mobile'      => false,
-            ],
+            'rules'         => $rules,
             'cheating_code' => $cheating_code,
             'url' => 'https://sdo.kineu.kz/newstudy/test/index.php?type=' . $type . '&disc=' . $predmet_id,
             'submit_url' => 'https://sdo.kineu.kz/newstudy/test/result.php'
@@ -132,6 +125,8 @@ class JWTController extends Controller
                 404);
         }
 
+        $rules = ProctoringRule::all()->toArray();
+
         $data = [
             'name'          => self::NAME,
             'userId'        => $student_id,
@@ -139,17 +134,7 @@ class JWTController extends Controller
             'timeopen'      => $timeopen,
             'timeclose'     => $timeopen + 900, // 15 минут, Ваня, чтобы успели воткнуть всё оборудование
             'duration'      => 1, // 1 минута, Ваня
-            'rules'         => [
-                'face_rec'    => true,
-                'screen'      => true,
-                'dual_screen' => true,
-                'live_chat'   => false,
-                'audio'       => true,
-                'stream'      => true,
-                'clipboard'   => true,
-                'authorize'   => true,
-                'mobile'      => false,
-            ],
+            'rules'         => $rules,
             'cheating_code' => $cheating_code,
             'url' => 'https://sdo.kineu.kz/newstudy/test/testing_proctoring.php',
             'submit_url' => 'https://sdo.kineu.kz/newstudy/test/testing_proctoring.php'
