@@ -24,26 +24,6 @@ class User extends Authenticatable
     protected $table = 'kv_users';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'login',
-        'email'
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'pass'
-    ];
-
-    /**
      * Get the password for the user.
      *
      * @return string
@@ -51,5 +31,15 @@ class User extends Authenticatable
     public function getAuthPassword()
     {
         return $this->pass;
+    }
+
+    /**
+     * Get the user's full name.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return "{$this->surname} {$this->name} {$this->patronymic}";
     }
 }

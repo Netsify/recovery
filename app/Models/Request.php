@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Request extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -23,14 +25,25 @@ class Request extends Model
      * @var array
      */
     protected $fillable = [
-        'student_id', 'email', 'accepted_at'
+        'student_id', 'email'
     ];
 
     /**
-     * Return the request's attached documents
+     * Return documents attached to the email change request
      */
-    public function requests(): HasMany
+    public function documents(): HasMany
     {
         return $this->hasMany(Document::class);
+    }
+
+    /**
+     * Create the email change request.
+     */
+    public function create($email)
+    {
+        $this->create([
+            'student_id' => session('student')->stud_id,
+            'email' => $email
+        ])->save();
     }
 }
