@@ -23,11 +23,11 @@
                             </thead>
                             <tbody>
                                 <tr align="center">
-                                    <td>{{ $student->getFullName() }}</th>
-                                    <td>{{ $student->getGroup() }}</th>
-                                    <td>{{ $student->specialty->getFullSpecialty() }}</th>
-                                    <td>{{ $student->educationform->name }}</th>
-                                    <td>{{ $student->stud_post }}</th>
+                                    <td>{{ $full_name }}</td>
+                                    <td>{{ $group }}</td>
+                                    <td>{{ $specialty }}</td>
+                                    <td>{{ $education_form }}</td>
+                                    <td>{{ $admission_year }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -49,16 +49,19 @@
                                 </ul>
                             </div>
                         @endif
-                        <form action="{{ route('students.send') }}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                Ваш Email в системе: <strong>{{ $student->disguiseEmail() }}</strong>
-                            </div>
-                            <div class="d-flex justify-content-between">
+                        <div class="form-group">
+                            Ваш Email в системе: <strong>{{ $disguised_email }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <form action="{{ route('students.send') }}" method="POST">
+                                @csrf
                                 <button type="submit" class="btn btn-info">Отправить</button>
-                                {{--<a href="{{ route('students.recovery') }}" class="btn btn-success">Заявка на смену почты</a>--}}
-                            </div>
-                        </form>
+                            </form>
+                            <form action="{{ route('students.recovery') }}" method="GET">
+                                <input type="hidden" name="IIN" value="{{ $IIN }}">
+                                <button type="submit" class="btn btn-success">Заявка на смену почты</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

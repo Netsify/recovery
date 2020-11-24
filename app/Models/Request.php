@@ -35,15 +35,4 @@ class Request extends Model
     {
         return $this->hasMany(Document::class);
     }
-
-    /**
-     * Create the email change request.
-     */
-    public function create($email)
-    {
-        $this->create([
-            'student_id' => session('student')->stud_id,
-            'email' => $email
-        ])->save();
-    }
 }

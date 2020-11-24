@@ -24,8 +24,18 @@ class Student extends Model
      * @var array
      */
     protected $fillable = [
-        'IIN', 'email',
+        'IIN', 'email'
     ];
+
+    /**
+     * Get the student's full name.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return "{$this->stud_fam} {$this->stud_name} {$this->stud_otch}";
+    }
 
     public function specialty()
     {
