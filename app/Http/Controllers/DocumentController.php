@@ -4,24 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DocumentRequest;
 use App\Models\Document;
+use App\Models\Request;
 
 class DocumentController extends Controller
 {
-    /**
-     * @var Document
-     */
-    private $document;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @param Document $document
-     */
-    public function __construct(Document $document)
-    {
-        $this->document = $document;
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -30,8 +16,19 @@ class DocumentController extends Controller
      */
     public function store(DocumentRequest $request)
     {
+        $emailRequest = Request::query()->create([
+            'student_id' => session('student')->stud_id,
+            'email' => $request->email
+        ]);
+
         foreach ($request->file('passport') as $file) {
-            $this->document->saveDocument($file, $request->email);
+            $storedPath = $file->store('passports', 'public');
+
+            Document::query()->create([
+                'request_id' => $emailRequest->id,
+                'path' => $storedPath,
+                'name' => $file->getClientOriginalName(),
+            ]);
         }
 
         return redirect()->route('students.recovery_thanks');

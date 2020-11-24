@@ -26,22 +26,4 @@ class Document extends Model
     protected $fillable = [
         'request_id', 'path', 'name'
     ];
-
-    /**
-     * Save a document.
-     *
-     * @param string $file
-     * @return void
-     */
-    public function saveDocument($file, $email)
-    {
-        $storedPath = $file->store('passports', 'public');
-
-        $this->create([
-            'student_id' => session('student')->stud_id,
-            'path' => $storedPath,
-            'name' => $file->getClientOriginalName(),
-            'requested_email' => $email,
-        ])->save();
-    }
 }
