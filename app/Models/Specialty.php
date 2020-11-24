@@ -27,4 +27,9 @@ class Specialty extends Model
     {
         return "{$this->spec_shifr} {$this->spec_name}({$this->spec_year})";
     }
+
+    public function getLanguage()
+    {
+        return preg_match('<(каз)>ui', $this->spec_forma) ? 'kz' : 'ru';
+    }
 }
