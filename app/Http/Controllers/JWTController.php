@@ -42,6 +42,7 @@ class JWTController extends Controller
         $predmet = Predmet::query()->find($predmet_id);
         $typeTest = TestsType::query()->where(['name' => $type])->first();
         $student = Student::query()->find($student_id);
+
         if (!$predmet || !$typeTest || !$student) {
             return response()->json(
                 [
@@ -63,8 +64,9 @@ class JWTController extends Controller
             'duration'      => $carbon->hour * 60 + $carbon->minute,
             'rules'         => $this->getProctoringRules(),
             'cheating_code' => $cheating_code,
-            'url' => 'https://sdo.kineu.kz/newstudy/test/index.php?type=' . $type . '&disc=' . $predmet_id,
-            'submit_url' => 'https://sdo.kineu.kz/newstudy/test/result.php'
+            'url'           => 'https://sdo.kineu.kz/newstudy/test/index.php?type=' . $type . '&disc=' . $predmet_id,
+            'submit_url'    => 'https://sdo.kineu.kz/newstudy/test/result.php',
+            'lang'          => $student->specialty->getLanguage()
         ];
 
         $token = Token::customPayload($data, self::SECRET);
@@ -132,8 +134,9 @@ class JWTController extends Controller
             'duration'      => 1, // 1 минута, Ваня
             'rules'         => $this->getProctoringRules(),
             'cheating_code' => $cheating_code,
-            'url' => 'https://sdo.kineu.kz/newstudy/test/testing_proctoring.php',
-            'submit_url' => 'https://sdo.kineu.kz/newstudy/test/testing_proctoring.php'
+            'url'           => 'https://sdo.kineu.kz/newstudy/test/testing_proctoring.php',
+            'submit_url'    => 'https://sdo.kineu.kz/newstudy/test/testing_proctoring.php',
+            'lang'          => $student->specialty->getLanguage()
         ];
 
         $token = Token::customPayload($data, self::SECRET);
