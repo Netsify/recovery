@@ -9,7 +9,12 @@ class ProctoringController extends Controller
 {
     public function getResult(Request $request)
     {
-        Log::channel('proctoring')->info("Были получены следующие данные", $request->all());
+        $headers = $request->headers->all();
+
+        Log::channel('proctoring')->info("Были получены следующие данные", [
+            'body'    => $request->all(),
+            'headers' => $headers
+        ]);
 
         return;
     }
