@@ -100,8 +100,8 @@ class StudentController extends Controller
             $data = [
                 'full_name' => $student->getFullName(),
                 'group' => $student->getGroup(),
-                'specialty' => $student->specialty()->getFullSpecialty(),
-                'education_form' => $student->educationform()->name,
+                'specialty' => $student->specialty->getFullSpecialty(),
+                'education_form' => $student->educationform->name,
                 'admission_year' => $student->stud_post,
                 'disguised_email' => $student->disguiseEmail()
             ];

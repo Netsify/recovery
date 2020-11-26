@@ -24,7 +24,7 @@
                                 <tr align="center">
                                     <td>{{ $full_name }}</td>
                                     <td>{{ $group }}</td>
-                                    <td>{{ $specialty }}</td>
+                                    <td>{{ /*$specialty*/ }}</td>
                                     <td>{{ $education_form }}</td>
                                     <td>{{ $admission_year }}</td>
                                 </tr>

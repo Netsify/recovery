@@ -57,10 +57,10 @@
                                 @csrf
                                 <button type="submit" class="btn btn-info">Отправить</button>
                             </form>
-                            <form action="{{ route('students.recovery') }}" method="GET">
-                                <input type="hidden" name="IIN" value="{{ $IIN }}">
-                                <button type="submit" class="btn btn-success">Заявка на смену почты</button>
-                            </form>
+{{--                            <form action="{{ route('students.recovery') }}" method="GET">--}}
+{{--                                <input type="hidden" name="IIN" value="{{ $IIN }}">--}}
+{{--                                <button type="submit" class="btn btn-success">Заявка на смену почты</button>--}}
+{{--                            </form>--}}
                         </div>
                     </div>
                 </div>
