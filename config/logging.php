@@ -100,11 +100,17 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
-        'proctoring' => [
+        'proctoring-info' => [
             'driver' => 'daily',
-            'path'   => storage_path('logs/proctoring.log'),
+            'path'   => storage_path('logs/proctoring-info.log'),
             'level'  => 'info',
-        ]
+        ],
+
+        'proctoring-error' => [
+            'driver' => 'daily',
+            'path'   => storage_path('logs/proctoring-error.log'),
+            'level'  => 'error',
+]
     ],
 
 ];
