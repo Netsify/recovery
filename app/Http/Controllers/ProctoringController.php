@@ -26,7 +26,7 @@ class ProctoringController extends JWTController
 
         $proctoringData = new ProctoringData($request->get('cheating_code'), $data, $isStream);
 
-        if (!$isStream) {
+        if (!$isStream && $request->has('cheatings')) {
             $proctoringData->setCheatings($request->get('cheatings'));
         }
 
