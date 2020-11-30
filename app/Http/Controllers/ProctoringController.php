@@ -2,20 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Proctoring\ProctoringResult;
+use App\Models\Proctoring\TestsResult;
+use App\Services\ProctoringData;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use ReallySimpleJWT\Token;
 
-class ProctoringController extends Controller
+class ProctoringController extends JWTController
 {
     public function getResult(Request $request)
     {
-        $headers = $request->headers->all();
+        $isStream = $request->get('isStream');
+        if ($isStream) {
+            $data = [
+                'stream_link'     => $request->get('stream')['link'],
+                'stream_uploaded' => Carbon::createFromTimestamp($request->get('stream')['uploaded'])
+            ];
+        } else {
+            $data = $request->only(['start_time', 'end_time', 'score']);
+        }
 
-        Log::channel('proctoring')->info("Были получены следующие данные", [
-            'body'    => $request->all(),
-            'headers' => $headers
-        ]);
+        $proctoringData = new ProctoringData($request->get('cheating_code'), $data, $isStream);
 
-        return;
+        if (!$isStream && $request->has('cheatings')) {
+            $proctoringData->setCheatings($request->get('cheatings'));
+        }
+
+        if ($proctoringData->saveData()) {
+            return response()->json([
+                'status'  => 201,
+                'message' => "Данные успешно сохранены"
+            ], 201);
+        }
     }
 }

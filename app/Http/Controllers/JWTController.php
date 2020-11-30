@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Predmet;
-use App\Models\ProctoringRule;
+use App\Models\Proctoring\ProctoringRule;
 use App\Models\Student;
 use App\Models\TestsType;
 use Carbon\Carbon;
