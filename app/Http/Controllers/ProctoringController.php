@@ -30,11 +30,20 @@ class ProctoringController extends JWTController
             $proctoringData->setCheatings($request->get('cheatings'));
         }
 
+
         if ($proctoringData->saveData()) {
             return response()->json([
                 'status'  => 201,
                 'message' => "Данные успешно сохранены"
             ], 201);
+        } else {
+            Log::channel('proctoring-error')->error("Произошла ошибка при попытке сохранения результата");
+
+            return response()->json([
+                'status'  => 400,
+                'message' => "Произошла ошибка при попытке сохранения результата"
+            ], 400);
+
         }
     }
 }
