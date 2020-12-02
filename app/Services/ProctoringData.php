@@ -10,6 +10,8 @@ namespace App\Services;
 
 
 use App\Models\Proctoring\Cheating;
+use App\Models\Proctoring\CheatingType;
+use App\Models\Proctoring\InfoType;
 use App\Models\Proctoring\ProctoringResult;
 use App\Models\Proctoring\TestsResult;
 use Carbon\Carbon;
@@ -48,24 +50,18 @@ class ProctoringData
             $res = $testsResult->proctoringResult()->save($proctoringResult);
         } else {
             $res = $testsResult->proctoringResult()->update($arrayProctoringResult);
+            $proctoringResult = $testsResult->proctoringResult;
         }
 
         if ($res) {
             if ($this->_cheatings) {
-                if ($this->saveCheatings($proctoringResult)) {
-                    return true;
-                }
+                return $this->saveCheatings($proctoringResult);
             }
 
             return true;
-        } else {
-            Log::channel('proctoring-error')->error("Произошла ошибка при попытке сохранения результата");
-
-            return response()->json([
-                'status'  => 400,
-                'message' => "Произошла ошибка при попытке сохранения результата"
-            ], 400);
         }
+
+        return false;
     }
 
     public function setCheatings(array $cheatings)
@@ -81,10 +77,40 @@ class ProctoringData
             foreach ($this->_cheatings as $cheating) {
                 $cheating['uploaded_at'] = Carbon::createFromTimestamp($cheating['uploaded_at']);
                 unset($cheating['end_at'], $cheating['pk']);
-                $cheatings[] = new Cheating($cheating);
+
+                $infoType = $this->getInfoType($cheating);
+                $cheatingType = $this->getCheatingType($cheating);
+                $ch = new Cheating($cheating);
+                $ch->info_type_id = $infoType;
+                $ch->cheating_type_id = $cheatingType;
+
+                $cheatings[] = $ch;
             }
 
             return $proctoringResult->cheatings()->saveMany($cheatings);
         }
+    }
+
+    private function getInfoType(&$cheating)
+    {
+        $infoType = InfoType::query()
+            ->where('info_en', $cheating['info'])
+            ->firstOrCreate(['info_en' => $cheating['info']]);
+
+        unset($cheating['info']);
+
+        return $infoType->id;
+
+    }
+
+    private function getCheatingType(&$cheating)
+    {
+        $cheatingType = CheatingType::query()
+            ->where('name', $cheating['cheating_type'])
+            ->firstOrCreate(['name' => $cheating['cheating_type']]);
+
+        unset($cheating['cheating_type']);
+
+        return $cheatingType->id;
     }
 }

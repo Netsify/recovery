@@ -17,13 +17,15 @@ class CreateCheatingsTable extends Migration
             $table->bigIncrements('id');
             $table->longText('image')->nullable();
             $table->longText('content')->nullable();
-            $table->string('info')->nullable();
+            $table->bigInteger('info_type_id')->unsigned()->nullable();
             $table->integer('level')->nullable();
             $table->timestamp('uploaded_at')->nullable();
-            $table->string('cheating_type')->nullable();
+            $table->bigInteger('cheating_type_id')->unsigned()->nullable();
             $table->bigInteger('proctoring_result_id')->unsigned();
 //            $table->timestamps();
             $table->foreign('proctoring_result_id')->references('id')->on('proctoring_results');
+            $table->foreign('cheating_type_id')->references('id')->on('cheating_types');
+            $table->foreign('info_type_id')->references('id')->on('info_types');
         });
     }
 

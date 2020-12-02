@@ -26,3 +26,13 @@ Route::get('testing_jwt', [\App\Http\Controllers\JWTController::class, 'testing'
 
 Route::post('proctoring/result', [\App\Http\Controllers\ProctoringController::class, 'getResult'])
     ->middleware('proctoring');
+
+Route::get('test', function () {
+    $info = \App\Models\Proctoring\InfoType::first();
+    $type = \App\Models\Proctoring\CheatingType::first();
+    $cheating = new \App\Models\Proctoring\Cheating();
+    $cheating->info_type_id = $info->id;
+    $cheating->cheating_type_id = $type->id;
+    $cheating->proctoring_result_id = 1;
+    $cheating->save();
+});
