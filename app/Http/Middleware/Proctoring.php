@@ -19,6 +19,8 @@ class Proctoring
      */
     public function handle(Request $request, Closure $next)
     {
+        Log::channel('proctoring-info')->info("Данные, полученные из запроса", $request->all());
+
         if (!$request->headers->has('authorization')) {
             return response()->json(['status' => "Not authorized"], 401);
         }
