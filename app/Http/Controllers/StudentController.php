@@ -55,19 +55,9 @@ class StudentController extends Controller
         if (!is_null($student)) {
             session(compact('student'));
 
-            $data = [
-                'full_name' => $student->full_name,
-                'group' => $student->getGroup(),
-                'specialty' => $student->specialty->getFullSpecialty(),
-                'education_form' => $student->educationform->name,
-                'admission_year' => $student->stud_post,
-                'disguised_email' => $student->disguiseEmail(),
-                'IIN' => $request->IIN
-            ];
-
             return is_null($student->stud_vizit) || is_null($student->email)
-                ? view('email.index', $data)
-                : view('recovery.resend', $data);
+                ? view('email.index', compact('student'))
+                : view('recovery.resend', compact('student'));
         } else {
             session(['IIN' => $request->IIN]);
             session()->flash('message', config('app.iin_failed'));
@@ -97,18 +87,9 @@ class StudentController extends Controller
 
             session(compact('student'));
 
-            $data = [
-                'full_name' => $student->getFullName(),
-                'group' => $student->getGroup(),
-                'specialty' => $student->specialty->getFullSpecialty(),
-                'education_form' => $student->educationform->name,
-                'admission_year' => $student->stud_post,
-                'disguised_email' => $student->disguiseEmail()
-            ];
-
             return is_null($student->stud_vizit) || is_null($student->email) ?
-                view('email.index', $data) :
-                view('recovery.resend', $data);
+                view('email.index', compact('student')) :
+                view('recovery.resend', compact('student'));
         } else {
             session()->flash('message', config('app.name_failed'));
 

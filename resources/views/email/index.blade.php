@@ -22,11 +22,11 @@
                             </thead>
                             <tbody>
                                 <tr align="center">
-                                    <td>{{ $full_name }}</td>
-                                    <td>{{ $group }}</td>
-                                    <td>{{ /*$specialty*/ }}</td>
-                                    <td>{{ $education_form }}</td>
-                                    <td>{{ $admission_year }}</td>
+                                    <td>{{ $student->full_name }}</td>
+                                    <td>{{ $student->getGroup() }}</td>
+                                    <td>{{ $student->specialty->getFullSpecialty() }}</td>
+                                    <td>{{ $student->educationform->name }}</td>
+                                    <td>{{ $student->stud_post }}</td>
                                 </tr>
                             </tbody>
                         </table>

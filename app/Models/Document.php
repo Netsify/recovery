@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Document extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
     /**
      * The table associated with the model.

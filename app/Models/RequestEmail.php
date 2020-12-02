@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Request extends Model
+class RequestEmail extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -33,6 +34,14 @@ class Request extends Model
      */
     public function documents(): HasMany
     {
-        return $this->hasMany(Document::class);
+        return $this->hasMany(Document::class, 'request_id', 'id');
+    }
+
+    /**
+     * Return the email change request owner
+     */
+    public function student(): HasOne
+    {
+        return $this->hasOne(Student::class, 'stud_id', 'student_id');
     }
 }

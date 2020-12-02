@@ -21,37 +21,40 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($students as $student)
+                                @forelse($email_requests as $email_request)
                                     <tr align="center">
-                                        <td>{{ $student->stud_id }}</td>
-                                        <td>{{ $student->getFullName() }}</td>
-                                        <td>{{ $student->IIN }}</td>
-                                        <td>{{ $student->email }}</td>
-                                        <td><strong>{{ $student->documents->first()->requested_email }}</strong></td>
+                                        <td>{{ $email_request->student_id }}</td>
+                                        <td>{{ $email_request->student->getFullName() }}</td>
+                                        <td>{{ $email_request->student->IIN }}</td>
+                                        <td>{{ $email_request->student->email }}</td>
+                                        <td><strong>{{ $email_request->email }}</strong></td>
                                         <td>
-                                            @foreach($student->documents as $document)
+                                            @foreach($email_request->documents as $document)
                                                 <a href="{{ asset('/storage/' . $document->path) }}" download="{{ $document->name }}">{{ $document->name }}</a>
                                             @endforeach
                                         </td>
-                                        <td>{{ $student->documents->first()->created_at }}</td>
+                                        <td>{{ $email_request->created_at }}</td>
                                         <td>
-                                            <form action="{{ route('admin.update', $student->documents->first()->id) }}" method="post">
+                                            <form action="{{ route('admin.update', $email_request->id) }}" method="post">
                                                 @csrf
                                                 @method('PATCH')
-                                                <input type="hidden" name="student_id" value="{{ $student->documents->first()->student_id }}">
-                                                <input type="hidden" name="email" value="{{ $student->documents->first()->requested_email }}">
-                                                <button class="btn btn-success" type="submit">Принять</button>
+                                                <input type="hidden" name="email" value="{{ $email_request->email }}">
+                                                <button class="btn btn-sm btn-outline-success" type="submit">Принять</button>
                                             </form>
                                         </td>
                                         <td>
-                                            <form action="{{ route('admin.destroy', $student) }}" method="post">
+                                            <form action="{{ route('admin.destroy', $email_request->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-danger" type="submit">Удалить</button>
+                                                <button class="btn btn-sm btn-outline-danger" type="submit">Удалить</button>
                                             </form>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="9">Нет заявок на рассмотрение</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
 {{--                                {{ $students->links() }}--}}

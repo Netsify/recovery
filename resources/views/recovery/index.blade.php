@@ -24,7 +24,7 @@
                         <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                Ваш Email в системе: <strong>{{ $disguised_email }}</strong>
+                                Ваш Email в системе: <strong>{{ $student->disguiseEmail() }}</strong>
                             </div>
                             <div class="form-group">
                                 <p>Если Вы забыли пароль от учетной записи, то Вы можете отправить нам заявку
