@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Document;
+use App\Http\Requests\EmailRequest;
+use App\Models\RequestEmail;
 use App\Models\Student;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +27,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.index');
+        $email_requests = RequestEmail::with('student')->whereNull('accepted_at')->get();
+
+        return view('admin.index', compact('email_requests'));
     }
 
     /**
@@ -79,15 +82,11 @@ class AdminController extends Controller
      * @param  int  $id
      * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, RequestEmail $email_request)
     {
-        $student = Student::findOrFail($request->student_id);
-        $student->email = $request->email;
-        $student->save();
-
-        $document = Document::findOrFail($id);
-        $document->accepted_at = now();
-        $document->save();
+        $email_request->email = $request->email;
+        $email_request->accepted_at = now();
+        $email_request->save();
 
         return back();
     }
@@ -98,11 +97,9 @@ class AdminController extends Controller
      * @param  Student
      * @return RedirectResponse
      */
-    public function destroy(Student $student)
+    public function destroy(RequestEmail $email_request)
     {
-        foreach ($student->documents as $document) {
-            $document->delete();
-        }
+        $email_request->delete();
 
         return back();
     }

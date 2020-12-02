@@ -52,7 +52,7 @@ class Student extends Model
      */
     public function requests(): HasMany
     {
-        return $this->hasMany(Request::class, 'student_id', 'stud_id');
+        return $this->hasMany(RequestEmail::class, 'student_id', 'stud_id');
     }
 
     public function disguiseEmail()

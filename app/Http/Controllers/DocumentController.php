@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DocumentRequest;
 use App\Models\Document;
-use App\Models\Request;
+use App\Models\RequestEmail;
 
 class DocumentController extends Controller
 {
@@ -16,7 +16,7 @@ class DocumentController extends Controller
      */
     public function store(DocumentRequest $request)
     {
-        $emailRequest = Request::query()->create([
+        $emailRequest = RequestEmail::query()->create([
             'student_id' => session('student')->stud_id,
             'email' => $request->email
         ]);
