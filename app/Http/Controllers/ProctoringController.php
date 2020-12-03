@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Proctoring\ProctoringResult;
-use App\Models\Proctoring\TestsResult;
 use App\Services\ProctoringData;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-use ReallySimpleJWT\Token;
 
-class ProctoringController extends JWTController
+class ProctoringController extends Controller
 {
     public function getResult(Request $request)
     {
@@ -45,5 +43,25 @@ class ProctoringController extends JWTController
             ], 400);
 
         }
+    }
+
+    /**
+     * Метод принятия запроса на изменение фото в расссширении прокторинга
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function changePhoto(Request $request)
+    {
+        Log::channel('proctoring-info')->info("Получены данные на изменеие фотографии", [
+            'request' => $request->all(),
+            'headers' => $request->headers,
+            'files'   => $request->files->all()
+        ]);
+
+        return response()->json([
+            'status'  => 200,
+            'message' => "Запрос обработан"
+        ]);
     }
 }

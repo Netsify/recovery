@@ -26,3 +26,5 @@ Route::get('testing_jwt', [\App\Http\Controllers\JWTController::class, 'testing'
 
 Route::post('proctoring/result', [\App\Http\Controllers\ProctoringController::class, 'getResult'])
     ->middleware('proctoring');
+
+Route::post('proctoring/change_photo', [\App\Http\Controllers\ProctoringController::class, 'changePhoto']);
