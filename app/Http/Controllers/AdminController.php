@@ -94,7 +94,7 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Student
+     * @param  RequestEmail $email_request
      * @return RedirectResponse
      */
     public function destroy(RequestEmail $email_request)

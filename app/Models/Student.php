@@ -28,6 +28,13 @@ class Student extends Model
     ];
 
     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * Get the student's full name.
      *
      * @return string
