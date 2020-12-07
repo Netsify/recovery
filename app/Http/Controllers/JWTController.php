@@ -56,9 +56,8 @@ class JWTController extends Controller
         $cheating_code = base64_encode($student_id . '_' . microtime(true) . '_' . $predmet_id);
 
         $data = [
-            'name'          => self::NAME,
-            'userId'        => $student_id,
-            'exam_name'     => $predmet->pred_name,
+            'user_id'       => $student_id,
+            'name'          => $predmet->pred_name,
             'timeopen'      => $timeopen,
             'timeclose'     => $timeclose,
             'duration'      => $carbon->hour * 60 + $carbon->minute,
@@ -126,9 +125,8 @@ class JWTController extends Controller
         }
 
         $data = [
-            'name'          => self::NAME,
-            'userId'        => $student_id,
-            'exam_name'     => "Тестирование прокторинга",
+            'user_id'       => $student_id,
+            'name'          => "Тестирование прокторинга",
             'timeopen'      => $timeopen,
             'timeclose'     => $timeopen + 900, // 15 минут, Ваня, чтобы успели воткнуть всё оборудование
             'duration'      => 1, // 1 минута, Ваня
