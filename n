@@ -1,0 +1,28 @@
+{ 
+	"user_id": 34,
+	"cheating_code": "45875",    
+	"score": 75,
+	"video": "https://videolink",
+	"start_at":  1234567890,
+	"end_at":  1234567890,
+	"identification": "https://imagelink", 
+	"cheatings": [
+		{
+			"image": "https://...",
+			"content": "",
+			"info": "no_student",
+			"start": 5, 
+			"end": 15,
+			"created_at": 1234567890,
+			"cheating_type": "face_rec"
+		}, 
+		{
+			"image": "https://...",
+			"content": "",
+			"info": "not_recognized",
+			"start": 25,
+			"end": 35,
+			"created_at": 1234567890,
+			"cheating_type": "face_rec"
+		} ]
+}
