@@ -12,6 +12,8 @@ class ProctoringController extends Controller
 {
     public function getResult(Request $request)
     {
+        dump($request->headers->all());
+        dd($request->all());
         $isStream = $request->get('isStream');
         if ($isStream) {
             $data = [
