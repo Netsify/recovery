@@ -19,41 +19,38 @@ use Illuminate\Support\Facades\Log;
 
 class ProctoringData
 {
-    private $_isStream;
     private $_cheatingCode;
     private $_data;
     private $_cheatings;
 
-    public function __construct(string $cheatingCode, array $data, bool $isStream)
+    public function __construct(string $cheatingCode, array $data)
     {
         $this->_cheatingCode = $cheatingCode;
         $this->_data         = $data;
-        $this->_isStream     = $isStream;
     }
 
     public function saveData()
     {
         $testsResult = TestsResult::query()->where('cheating_code', $this->_cheatingCode)->first();
 
-        if (!$this->_isStream) {
-            $arrayProctoringResult = [
-                'start_time' => Carbon::createFromTimestamp($this->_data['start_time']),
-                'end_time'   => Carbon::createFromTimestamp($this->_data['end_time']),
-                'score'      => $this->_data['score']
-            ];
-        } else {
-            $arrayProctoringResult = $this->_data;
-        }
+        $arrayProctoringResult = [
+            'start_time'     => Carbon::createFromTimestamp($this->_data['start_at']),
+            'end_time'       => Carbon::createFromTimestamp($this->_data['end_at']),
+            'score'          => $this->_data['score'],
+            'stream_link'    => $this->_data['video'],
+            'identification' => $this->_data['identification']
+        ];
+
 
         if (!$testsResult->proctoringResult) {
             $proctoringResult = new ProctoringResult($arrayProctoringResult);
-            $res = $testsResult->proctoringResult()->save($proctoringResult);
+            $proctoringResult = $testsResult->proctoringResult()->save($proctoringResult);
         } else {
-            $res = $testsResult->proctoringResult()->update($arrayProctoringResult);
-            $proctoringResult = $testsResult->proctoringResult;
+            $proctoringResult = $testsResult->proctoringResult->update($arrayProctoringResult);
+            $proctoringResult = $testsResult->proctoringResult()->first();
         }
 
-        if ($res) {
+        if ($proctoringResult) {
             if ($this->_cheatings) {
                 return $this->saveCheatings($proctoringResult);
             }
@@ -75,13 +72,15 @@ class ProctoringData
             $cheatings = [];
 
             foreach ($this->_cheatings as $cheating) {
-                $cheating['uploaded_at'] = Carbon::createFromTimestamp($cheating['uploaded_at']);
-                unset($cheating['end_at'], $cheating['pk']);
-
                 $infoType = $this->getInfoType($cheating);
                 $cheatingType = $this->getCheatingType($cheating);
-                $ch = new Cheating($cheating);
+
+                $ch = new Cheating();
+                $ch->image = $cheating['image'];
+                $ch->content = $cheating['content'];
                 $ch->info_type_id = $infoType;
+                $ch->level = $cheating['score'];
+                $ch->uploaded_at = Carbon::createFromTimestamp($cheating['created_at']);
                 $ch->cheating_type_id = $cheatingType;
 
                 $cheatings[] = $ch;
