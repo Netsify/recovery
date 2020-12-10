@@ -23,7 +23,6 @@ class Proctoring
             'request' => $request->all(),
             'headers' => $request->headers->all()
         ]);
-        exit();
 
         if (!$request->headers->has('authorization')) {
             return response()->json(['status' => "Not authorized"], 401);
