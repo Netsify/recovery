@@ -15,6 +15,7 @@ class CreateProctoringIdentificationPhotosTable extends Migration
     {
         Schema::create('proctoring_identification_photos', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('pk')->comment('ID из запрос на смену фото от Aero');
             $table->integer('student_id');
             $table->string('old_image', 255);
             $table->string('new_image', 255);

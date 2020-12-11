@@ -53,6 +53,7 @@ class ProctoringController extends Controller
         $photo = new IdentificationPhoto($request->only('old_image', 'new_image'));
 
         $photo->student_id = $request->get('user_id');
+        $photo->pk = $request->get('id');
 
         if ($photo->save()) {
             return response()->json([
