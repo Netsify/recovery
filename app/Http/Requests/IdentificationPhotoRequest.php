@@ -26,6 +26,7 @@ class IdentificationPhotoRequest extends FormRequest
     public function rules()
     {
         return [
+            'id'        => ['required'],
             'user_id'   => ['required', 'exists:students,stud_id'],
             'old_image' => ['required', 'string'],
             'new_image' => ['required', 'string'],

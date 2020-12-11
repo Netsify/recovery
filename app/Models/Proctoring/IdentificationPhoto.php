@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Модель для работы с фотками студента на прокторинге
  *
  * @property integer $id
+ * @property int $pk            - ИД мз системы прокторинга
  * @property int $student_id    - ИД студента
  * @property string $old_image  - Старая фотка
  * @property string $new_image  - Новая фотка
