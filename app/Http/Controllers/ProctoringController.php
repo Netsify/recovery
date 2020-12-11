@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IdentificationPhotoRequest;
+use App\Models\Proctoring\IdentificationPhoto;
 use App\Models\Proctoring\TestsResult;
 use App\Services\ProctoringData;
 use Carbon\Carbon;
@@ -36,22 +38,32 @@ class ProctoringController extends Controller
     }
 
     /**
-     * Метод принятия запроса на изменение фото в расссширении прокторинга
-     * @param Request $request
+     * Метод принятия запроса на изменение фото в расширении прокторинга
+     * @param IdentificationPhotoRequest $request
      *
      * @return Response
      */
-    public function changePhoto(Request $request)
+    public function changePhoto(IdentificationPhotoRequest $request)
     {
-        Log::channel('proctoring-info')->info("Получены данные на изменеие фотографии", [
+        Log::channel('proctoring-info')->info("Получены данные на изменение фотографии", [
             'request' => $request->all(),
             'headers' => $request->headers,
-            'files'   => $request->files->all()
         ]);
 
+        $photo = new IdentificationPhoto($request->only('old_image', 'new_image'));
+
+        $photo->student_id = $request->get('user_id');
+
+        if ($photo->save()) {
+            return response()->json([
+                'status'  => 200,
+                'message' => "Данные были успешно получены"
+            ], 200);
+        }
+
         return response()->json([
-            'status'  => 200,
-            'message' => "Запрос обработан"
-        ]);
+            'status'  => 500,
+            'message' => "Не удалось принять и обработать запрос"
+        ],500);
     }
 }
