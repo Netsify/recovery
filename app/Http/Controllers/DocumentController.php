@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DocumentRequest;
 use App\Models\Document;
-use App\Models\RequestEmail;
+use App\Models\EmailChangeRequest;
 
 class DocumentController extends Controller
 {
@@ -16,7 +16,7 @@ class DocumentController extends Controller
      */
     public function store(DocumentRequest $request)
     {
-        $emailRequest = RequestEmail::query()->create([
+        $emailRequest = EmailChangeRequest::query()->create([
             'student_id' => session('student')->stud_id,
             'email' => $request->email
         ]);

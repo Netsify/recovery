@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class RequestEmail extends Model
+class EmailChangeRequest extends Model
 {
     use HasFactory;
     use SoftDeletes;
