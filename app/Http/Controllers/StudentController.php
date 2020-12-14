@@ -14,7 +14,7 @@ use Illuminate\View\View;
 class StudentController extends Controller
 {
     /**
-     * @var Student
+     * @var $student
      */
     private $student;
 
