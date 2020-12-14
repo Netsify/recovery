@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Mockery\Exception;
 
 class ProctoringController extends Controller
 {
@@ -66,5 +67,35 @@ class ProctoringController extends Controller
             'status'  => 500,
             'message' => "Не удалось принять и обработать запрос"
         ],500);
+    }
+
+    public function allPhotos()
+    {
+        $photos = IdentificationPhoto::with('student')->get();
+
+        $result = [];
+        try {
+            foreach ($photos as $photo) {
+                $result[] = [
+                    'id' => $photo->id,
+                    'pk' => $photo->pk,
+                    'old_image' => $photo->old_image,
+                    'new_image' => $photo->new_image,
+                    'student' => $photo->student->getFullName(),
+                ];
+            }
+
+            return response()->json([
+                'status' => "ok",
+                'data' => $result
+            ], 200);
+        } catch (\Error $e) {
+            Log::channel('proctoring-error')->error($e->getMessage());
+
+            return response()->json([
+                'status' => "fail",
+                'data' => false
+            ], 500);
+        }
     }
 }

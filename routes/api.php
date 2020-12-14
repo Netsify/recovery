@@ -28,3 +28,5 @@ Route::post('proctoring/result', [\App\Http\Controllers\ProctoringController::cl
     ->middleware('proctoring');
 
 Route::post('proctoring/change_photo', [\App\Http\Controllers\ProctoringController::class, 'changePhoto']);
+
+Route::get('/proctoring/photos', [\App\Http\Controllers\ProctoringController::class, 'allPhotos'])->middleware('proctoring');

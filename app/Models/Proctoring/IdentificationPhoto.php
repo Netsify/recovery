@@ -34,8 +34,13 @@ class IdentificationPhoto extends Model
 
     protected $fillable = ['old_image', 'new_image'];
 
+    /**
+     * Возвращает студента
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function student()
     {
-        return $this->belongsTo(Student::class, 'stud_id');
+        return $this->belongsTo(Student::class, 'student_id', 'stud_id');
     }
 }

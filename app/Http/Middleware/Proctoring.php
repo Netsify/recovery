@@ -25,7 +25,7 @@ class Proctoring
         ]);
 
         if (!$request->headers->has('authorization')) {
-            return response()->json(['status' => "Not authorized"], 401);
+            return response()->json(['status' => "fail", 'data' => "Not authorized"], 401);
         }
 
         if (!$this->checkToken($request->headers->get('authorization'))) {
