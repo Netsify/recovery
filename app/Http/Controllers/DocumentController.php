@@ -11,7 +11,7 @@ class DocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param DocumentRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(DocumentRequest $request)

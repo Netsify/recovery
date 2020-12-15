@@ -132,6 +132,7 @@ class Student extends Model
      *
      * @return string
      */
+
     public function getFullName() : string
     {
         $fullname = $this->stud_fam . ' ' . $this->stud_name;
@@ -144,6 +145,8 @@ class Student extends Model
 
     /**
      * Return the student's group
+     *
+     * @return mixed
      */
     public function getGroup()
     {
