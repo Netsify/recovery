@@ -104,7 +104,7 @@ class Student extends Model
      * @param $IIN
      * @return Builder
      */
-    public function getByIIN($IIN) : Builder
+    public function getByIIN($IIN) : Student
     {
         return $this->where('IIN', $IIN)->latest($this->primaryKey)->first();
     }
@@ -115,7 +115,7 @@ class Student extends Model
      * @param $fullName
      * @return Builder
      */
-    public function getByFullName($fullName) : Builder
+    public function getByFullName($fullName) : Student
     {
         if (!isset($fullName['last_name'])) {
             $fullName['last_name'] = null;
