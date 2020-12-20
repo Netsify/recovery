@@ -5,6 +5,15 @@ namespace App\Models\Proctoring;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Модель для работы с результатами тестов
+ *
+ * @property integer $id
+ * @property string $cheating_code - cheating code
+ *
+ * Class TestsResult
+ * @package App\Models\Proctoring
+ */
 class TestsResult extends Model
 {
     use HasFactory;
@@ -13,6 +22,11 @@ class TestsResult extends Model
 
     public $timestamps = false;
 
+    /**
+     * Возвращает результат прокторинга
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function proctoringResult()
     {
         return $this->hasOne(ProctoringResult::class);

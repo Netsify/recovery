@@ -28,3 +28,10 @@ Route::post('proctoring/result', [\App\Http\Controllers\ProctoringController::cl
     ->middleware('proctoring');
 
 Route::post('proctoring/change_photo', [\App\Http\Controllers\ProctoringController::class, 'changePhoto']);
+
+Route::group(['middleware' => "proctoring"], function () {
+    Route::get('/proctoring/photos', [\App\Http\Controllers\ProctoringController::class, 'allPhotos']);
+
+    Route::get('/proctoring/accept_photo/{identification_photo}', [\App\Http\Controllers\IdentificationPhotoController::class, 'accept']);
+    Route::get('/proctoring/reject_photo/{identification_photo}', [\App\Http\Controllers\IdentificationPhotoController::class, 'reject']);
+});
