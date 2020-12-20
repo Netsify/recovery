@@ -10,6 +10,7 @@ use App\Transformers\IdentificationPhotoTransformer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 
@@ -58,6 +59,17 @@ class ProctoringController extends Controller
         $photo->pk = $request->get('id');
 
         if ($photo->save()) {
+            $student = $photo->student->getFullName();
+            $msg = "Получен запрос на изменение фото от " . $student;
+            $telegram = Http::get("https://api.telegram.org/bot720766457:AAE7SSje9PTMkAR4ZbJ6PgbwzahRS4aaAH4/sendMessage?chat_id=396932950&text=$msg");
+
+            if ($telegram->status() >= 400) {
+                Log::channel('proctoring-error')->error("Не удалось отправить сообщение боту.", [
+                    'body'    => $telegram->body(),
+                    'headers' => $telegram->headers(),
+                ]);
+            }
+
             return response()->json([
                 'status' => 200,
                 'message' => "Данные были успешно получены"
