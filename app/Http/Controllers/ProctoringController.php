@@ -61,6 +61,7 @@ class ProctoringController extends Controller
         if ($photo->save()) {
             $student = $photo->student->getFullName();
             $msg = "Получен запрос на изменение фото от " . $student;
+            $msg = urlencode($msg);
             $telegram = Http::get("https://api.telegram.org/bot720766457:AAE7SSje9PTMkAR4ZbJ6PgbwzahRS4aaAH4/sendMessage?chat_id=396932950&text=$msg");
 
             if ($telegram->status() >= 400) {
