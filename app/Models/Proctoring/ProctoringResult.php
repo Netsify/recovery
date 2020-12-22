@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $score - уровень доверия
  * @property string $stream_link - ссылка на видео
  * @property string $identification - ссылка на фото
+ * @property int $is_valid - Статус после ручной проверки результатов прокторинга
+ * @property Cheating[] $cheatings - Нарушения
  *
  * Class ProctoringResult
  * @package App\Models\Proctoring
