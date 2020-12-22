@@ -26,7 +26,7 @@ class AddStatusToProctoringResultsTable extends Migration
     public function down()
     {
         Schema::table('proctoring_results', function (Blueprint $table) {
-            $table->dropColumn('status');
+            $table->dropColumn('is_valid');
         });
     }
 }
