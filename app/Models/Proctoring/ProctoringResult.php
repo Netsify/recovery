@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $identification - ссылка на фото
  * @property int $is_valid - Статус после ручной проверки результатов прокторинга
  * @property Cheating[] $cheatings - Нарушения
- *
+ * @property TestsResult $test_result - Результат теста
  * Class ProctoringResult
  * @package App\Models\Proctoring
  */
@@ -38,5 +38,15 @@ class ProctoringResult extends Model
     public function cheatings()
     {
         return $this->hasMany(Cheating::class);
+    }
+
+    /**
+     * Результат теста
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function test_result()
+    {
+        return $this->belongsTo(TestsResult::class, 'tests_result_id');
     }
 }

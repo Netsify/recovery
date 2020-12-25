@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\IdentificationPhotoRequest;
 use App\Models\Proctoring\IdentificationPhoto;
+use App\Models\Proctoring\ProctoringResult;
 use App\Models\Proctoring\TestsResult;
 use App\Services\ProctoringData;
 use App\Transformers\IdentificationPhotoTransformer;

@@ -2,6 +2,7 @@
 
 namespace App\Models\Proctoring;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property integer $id
  * @property string $cheating_code - cheating code
+ * @property Carbon $date_start - Дата начала экзамена
+ * @property Carbon $date_end - Дата завершения экзамена
  *
  * Class TestsResult
  * @package App\Models\Proctoring

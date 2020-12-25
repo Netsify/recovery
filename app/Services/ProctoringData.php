@@ -33,14 +33,17 @@ class ProctoringData
     {
         $testsResult = TestsResult::query()->where('cheating_code', $this->_cheatingCode)->first();
 
+        if (!is_null($this->_data['end_at'])) {
+            $this->_data['end_at'] = Carbon::createFromTimestamp($this->_data['end_at']);
+        }
+
         $arrayProctoringResult = [
             'start_time'     => Carbon::createFromTimestamp($this->_data['start_at']),
-            'end_time'       => Carbon::createFromTimestamp($this->_data['end_at']),
+            'end_time'       => $this->_data['end_at'],
             'score'          => $this->_data['score'],
             'stream_link'    => $this->_data['video'],
             'identification' => $this->_data['identification']
         ];
-
 
         if (!$testsResult->proctoringResult) {
             $proctoringResult = new ProctoringResult($arrayProctoringResult);
@@ -82,6 +85,15 @@ class ProctoringData
                 $ch->level = $cheating['score'];
                 $ch->uploaded_at = Carbon::createFromTimestamp($cheating['created_at']);
                 $ch->cheating_type_id = $cheatingType;
+
+                $range = range(
+                    Carbon::createFromFormat('Y-m-d H:i:s', $proctoringResult->test_result->date_start)->timestamp,
+                    Carbon::createFromFormat('Y-m-d H:i:s', $proctoringResult->test_result->date_end)->timestamp
+                );
+
+                if (!in_array($ch->uploaded_at->timestamp, $range)) {
+                    $ch->deleted_at = (new Carbon())->timestamp;
+                }
 
                 $cheatings[] = $ch;
             }
