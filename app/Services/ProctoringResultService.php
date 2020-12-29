@@ -30,9 +30,11 @@ class ProctoringResultService
      *
      * @param array $cheatings
      */
-    public function deleteCheatings(array $cheatings)
+    public function deleteCheatings(?array $cheatings)
     {
-        $this->deletedRows = $this->_proctoringResult->cheatings()->whereIn('id', array_keys($cheatings))->delete();
+        if (!is_null($cheatings)) {
+            $this->deletedRows = $this->_proctoringResult->cheatings()->whereIn('id', array_keys($cheatings))->delete();
+        }
     }
 
     /**
