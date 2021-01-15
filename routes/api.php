@@ -29,9 +29,11 @@ Route::post('proctoring/result', [\App\Http\Controllers\ProctoringController::cl
 
 Route::post('proctoring/change_photo', [\App\Http\Controllers\ProctoringController::class, 'changePhoto']);
 
-Route::group(['middleware' => "proctoring"], function () {
-    Route::get('/proctoring/photos', [\App\Http\Controllers\ProctoringController::class, 'allPhotos']);
+Route::group(['middleware' => "proctoring", 'prefix' => "proctoring"], function () {
+    Route::get('photos', [\App\Http\Controllers\ProctoringController::class, 'allPhotos']);
 
-    Route::get('/proctoring/accept_photo/{identification_photo}', [\App\Http\Controllers\IdentificationPhotoController::class, 'accept']);
-    Route::get('/proctoring/reject_photo/{identification_photo}', [\App\Http\Controllers\IdentificationPhotoController::class, 'reject']);
+    Route::get('accept_photo/{identification_photo}', [\App\Http\Controllers\IdentificationPhotoController::class, 'accept']);
+    Route::get('reject_photo/{identification_photo}', [\App\Http\Controllers\IdentificationPhotoController::class, 'reject']);
+
+    Route::post('cheatings/delete', [\App\Http\Controllers\CheatingsController::class, 'delete']);
 });

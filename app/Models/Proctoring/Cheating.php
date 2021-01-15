@@ -5,6 +5,7 @@ namespace App\Models\Proctoring;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Класс нарушений
@@ -20,13 +21,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property InfoType $info            - Тип информации
  * @property CheatingType $type        - Тип нарушения
  * @property ProctoringResult $result  - Результат прокторринга
+ * @property Carbon $deleted_at        - Дата удаления
  *
  * Class Cheating
  * @package App\Models\Proctoring
  */
 class Cheating extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = ['image', 'content', 'info_type_id', 'level', 'uploaded_at', 'cheating_type_id'];
 
