@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\IdentificationPhotoRequest;
 use App\Models\Proctoring\IdentificationPhoto;
-use App\Models\Proctoring\ProctoringResult;
-use App\Models\Proctoring\TestsResult;
 use App\Services\ProctoringData;
 use App\Transformers\IdentificationPhotoTransformer;
-use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Mockery\Exception;
 
 class ProctoringController extends Controller
 {
@@ -92,13 +89,17 @@ class ProctoringController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function allPhotos()
+    public function allPhotos() : JsonResponse
     {
-        $photos = IdentificationPhoto::with('student')->get();
+        $unchecked_photos = IdentificationPhoto::with('student')->get();
+        $unchecked_photos = IdentificationPhotoTransformer::manyToArray($unchecked_photos);
+
+        $checked_photos = IdentificationPhoto::onlyTrashed()->with('student')->get();
+        $checked_photos = IdentificationPhotoTransformer::manyToArray($checked_photos);
 
         return response()->json([
             'status' => "ok",
-            'data' => IdentificationPhotoTransformer::manyToArray($photos)
+            'data'   => compact('unchecked_photos', 'checked_photos')
         ], 200);
     }
 }
