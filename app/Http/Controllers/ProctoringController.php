@@ -94,7 +94,7 @@ class ProctoringController extends Controller
         $unchecked_photos = IdentificationPhoto::with('student')->get();
         $unchecked_photos = IdentificationPhotoTransformer::manyToArray($unchecked_photos);
 
-        $checked_photos = IdentificationPhoto::onlyTrashed()->with('student')->get();
+        $checked_photos = IdentificationPhoto::onlyTrashed()->with('student')->orderByDesc('deleted_at')->get();
         $checked_photos = IdentificationPhotoTransformer::manyToArray($checked_photos);
 
         return response()->json([
