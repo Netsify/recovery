@@ -23,6 +23,11 @@ class IdentificationPhotoTransformer
             $student = $student->getFullName();
         }
 
+        $deleted_at = $identificationPhoto->deleted_at;
+        if ($deleted_at) {
+            $deleted_at = $deleted_at->format('Y-m-d H:i:s');
+        }
+
         return [
             'id'         => $identificationPhoto->id,
             'pk'         => $identificationPhoto->pk,
@@ -30,7 +35,8 @@ class IdentificationPhotoTransformer
             'new_image'  => $identificationPhoto->new_image,
             'student'    => $student,
             'created_at' => $identificationPhoto->created_at->format('Y-m-d H:i:s'),
-            'updated_at' => $identificationPhoto->created_at->format('Y-m-d H:i:s')
+            'updated_at' => $identificationPhoto->created_at->format('Y-m-d H:i:s'),
+            'deleted_at' => $deleted_at
         ];
     }
 
