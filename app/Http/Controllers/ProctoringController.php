@@ -28,10 +28,13 @@ class ProctoringController extends Controller
                 'message' => "Данные успешно сохранены"
             ], 201);
         } else {
-            Log::channel('proctoring-error')->error("Произошла ошибка при попытке сохранения результата");
+            Log::channel('proctoring-error')->error("Произошла ошибка при попытке сохранения результата", [
+                'request' => $request->all(),
+                'headers' => $request->headers->all()
+            ]);
 
             return response()->json([
-                'status' => 400,
+                'status'  => 400,
                 'message' => "Произошла ошибка при попытке сохранения результата"
             ], 400);
 

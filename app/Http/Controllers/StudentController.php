@@ -13,8 +13,10 @@ use Illuminate\View\View;
 
 class StudentController extends Controller
 {
+    const IIN_ADDED_BY_STUDENT = 2;
+
     /**
-     * @var Student
+     * @var $student
      */
     private $student;
 
@@ -28,26 +30,42 @@ class StudentController extends Controller
         $this->student = $student;
     }
 
+    /**
+     * @return View
+     */
     public function index(): View
     {
         return view('iin');
     }
 
+    /**
+     * @return View
+     */
     public function recovery(): View
     {
         return view('recovery.index');
     }
 
+    /**
+     * @return View
+     */
     public function recoveryThanks(): View
     {
         return view('recovery.thanks');
     }
 
+    /**
+     * @return View
+     */
     public function emailThanks(): View
     {
         return view('email.thanks');
     }
 
+    /**
+     * @param IINRequest $request
+     * @return View
+     */
     public function checkIIN(IINRequest $request): View
     {
         $student = $this->student->getByIIN($request->IIN);
@@ -66,6 +84,10 @@ class StudentController extends Controller
         }
     }
 
+    /**
+     * @param FullNameRequest $request
+     * @return View
+     */
     public function checkFullName(FullNameRequest $request): View
     {
         $params = [];
@@ -78,10 +100,7 @@ class StudentController extends Controller
         if (!is_null($student)) {
             if (is_null($student->IIN)) {
                 $student->IIN = session('IIN');
-                /**
-                 * IIN added by student himself
-                 */
-                $student->IIN_added_by = 2;
+                $student->IIN_added_by = self::IIN_ADDED_BY_STUDENT;
                 $student->save();
             }
 
@@ -97,6 +116,10 @@ class StudentController extends Controller
         }
     }
 
+    /**
+     * @param EmailRequest $request
+     * @return RedirectResponse
+     */
     public function sendEmail(EmailRequest $request): RedirectResponse
     {
         $student = session('student');

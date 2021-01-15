@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class RequestEmail extends Model
+class EmailChangeRequest extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -31,6 +30,8 @@ class RequestEmail extends Model
 
     /**
      * Return documents attached to the email change request
+     *
+     * @return HasMany
      */
     public function documents(): HasMany
     {
@@ -39,6 +40,8 @@ class RequestEmail extends Model
 
     /**
      * Return the email change request owner
+     *
+     * @return HasOne
      */
     public function student(): HasOne
     {
