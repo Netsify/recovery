@@ -37,3 +37,5 @@ Route::post('/documents', 'DocumentController@store')->name('documents.store');
 Route::post('/send', 'StudentController@sendEmail')->name('students.send');
 
 Route::resource('admin', 'AdminController');
+
+Route::resource('library', 'LibraryController');
