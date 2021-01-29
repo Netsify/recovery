@@ -2,7 +2,10 @@
 
 @section('content')
 <div id="test">
-    <input type="text" v-model="msg">
+    <select name="" id="" @change="bar">
+        <option value="a">a</option>
+        <option value="b">b</option>
+    </select>
     @{{ msg }}
 </div>
 @endsection
