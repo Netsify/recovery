@@ -85,7 +85,8 @@ class ProctoringData
                 $cheatings[] = $ch;
 
                 if ($infoType->info_en == 'audio') {
-                    $audios = explode("\r\n", $cheating['content']);
+                    $audios = explode("
+", $cheating['content']);
 
                     foreach ($audios as $audio) {
                         $audio = explode(':', $audio);
