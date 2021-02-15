@@ -29,10 +29,6 @@
 
     <main class="py-4">
         @yield('content')
-        <div id="app">
-            <input type="text" v-model="message" placeholder="отредактируй меня">
-            <p>Введённое сообщение: @{{ message }}</p>
-        </div>
     </main>
 
     @include('layouts.footer')
