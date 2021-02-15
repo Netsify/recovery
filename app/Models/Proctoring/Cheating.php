@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CheatingType $type        - Тип нарушения
  * @property ProctoringResult $result  - Результат прокторринга
  * @property Carbon $deleted_at        - Дата удаления
+ * @property bool|null $is_parsed_audio - Обработано ли аудио
  *
  * Class Cheating
  * @package App\Models\Proctoring

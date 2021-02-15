@@ -28,5 +28,24 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 const app = new Vue({
-    el: '#app',
+    el: '#test',
+    data() {
+        return {
+            todos: [],
+            msg: '11'
+        }
+    },
+    mounted() {
+        this.foo();
+    },
+    methods: {
+        foo() {
+            axios.get('/api/test').then(json => {
+                this.todos = json.data;
+            })
+        },
+        bar(e) {
+          this.msg = this.todos[e.target.value];
+        }
+    }
 });

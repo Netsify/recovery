@@ -26,7 +26,7 @@ class ProctoringData
     public function __construct(string $cheatingCode, array $data)
     {
         $this->_cheatingCode = $cheatingCode;
-        $this->_data         = $data;
+        $this->_data = $data;
     }
 
     public function saveData()
@@ -38,10 +38,10 @@ class ProctoringData
         }
 
         $arrayProctoringResult = [
-            'start_time'     => Carbon::createFromTimestamp($this->_data['start_at']),
-            'end_time'       => $this->_data['end_at'],
-            'score'          => $this->_data['score'],
-            'stream_link'    => $this->_data['video'],
+            'start_time' => Carbon::createFromTimestamp($this->_data['start_at']),
+            'end_time' => $this->_data['end_at'],
+            'score' => $this->_data['score'],
+            'stream_link' => $this->_data['video'],
             'identification' => $this->_data['identification']
         ];
 
@@ -71,31 +71,34 @@ class ProctoringData
 
     private function saveCheatings(ProctoringResult $proctoringResult)
     {
+        $date_start = $proctoringResult->test_result->date_start;
+        $date_end = $proctoringResult->test_result->date_end;
         if ($proctoringResult->cheatings->isEmpty()) {
             $cheatings = [];
 
             foreach ($this->_cheatings as $cheating) {
                 $infoType = $this->getInfoType($cheating);
                 $cheatingType = $this->getCheatingType($cheating);
+                $uploaded_at = Carbon::createFromTimestamp($cheating['created_at']);
 
-                $ch = new Cheating();
-                $ch->image = $cheating['image'];
-                $ch->content = $cheating['content'];
-                $ch->info_type_id = $infoType;
-                $ch->level = $cheating['score'];
-                $ch->uploaded_at = Carbon::createFromTimestamp($cheating['created_at']);
-                $ch->cheating_type_id = $cheatingType;
-
-                $range = range(
-                    Carbon::createFromFormat('Y-m-d H:i:s', $proctoringResult->test_result->date_start)->timestamp,
-                    Carbon::createFromFormat('Y-m-d H:i:s', $proctoringResult->test_result->date_end)->timestamp
-                );
-
-                if (!in_array($ch->uploaded_at->timestamp, $range)) {
-                    $ch->deleted_at = (new Carbon())->timestamp;
-                }
-
+                $ch = $this->createCheating($cheating['image'], $cheating['content'], $infoType->id, $cheating['score'], $uploaded_at, $cheatingType, $date_start, $date_end);
                 $cheatings[] = $ch;
+
+                if ($infoType->info_en == 'audio') {
+                    $audios = explode("
+", $cheating['content']);
+
+                    foreach ($audios as $audio) {
+                        $audio = explode(':', $audio);
+                        list($dates, $content) = $audio;
+                        $content = trim($content);
+
+                        list($start, $end) = explode('-', $dates);
+                        $start = Carbon::createFromTimestamp($start);
+
+                        $cheatings[] = $this->createCheating($cheating['image'], $content, $infoType->id, 1, $start, $cheatingType, $date_start, $date_end, true);
+                    }
+                }
             }
 
             return $proctoringResult->cheatings()->saveMany($cheatings);
@@ -110,7 +113,7 @@ class ProctoringData
 
         unset($cheating['info']);
 
-        return $infoType->id;
+        return $infoType;
 
     }
 
@@ -123,5 +126,41 @@ class ProctoringData
         unset($cheating['cheating_type']);
 
         return $cheatingType->id;
+    }
+
+    /**
+     * Создаём читинг
+     *
+     * @param $image
+     * @param $content
+     * @param $info_type_id
+     * @param $score
+     * @param $uploaded_at
+     * @param $cheating_type_id
+     * @param $date_start
+     * @param $date_end
+     * @return Cheating
+     */
+    private function createCheating($image, $content, $info_type_id, $score, $uploaded_at, $cheating_type_id, $date_start, $date_end, $parsed_audio = null) : Cheating
+    {
+        $ch = new Cheating();
+        $ch->image = $image;
+        $ch->content = $content;
+        $ch->info_type_id = $info_type_id;
+        $ch->level = $score;
+        $ch->uploaded_at = $uploaded_at;
+        $ch->cheating_type_id = $cheating_type_id;
+        $ch->is_parsed_audio = $parsed_audio;
+        $range = range(
+            Carbon::createFromFormat('Y-m-d H:i:s', $date_start)->timestamp,
+            Carbon::createFromFormat('Y-m-d H:i:s', $date_end)->timestamp
+        );
+
+        if (!in_array($ch->uploaded_at->timestamp, $range)) {
+            $ch->deleted_at = (new Carbon())->timestamp;
+        }
+
+        return $ch;
+
     }
 }

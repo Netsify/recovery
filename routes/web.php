@@ -39,3 +39,7 @@ Route::post('/send', 'StudentController@sendEmail')->name('students.send');
 Route::resource('admin', 'AdminController');
 
 Route::resource('library', 'LibraryController');
+
+Route::get('/vue', function () {
+    return view('vue');
+});
