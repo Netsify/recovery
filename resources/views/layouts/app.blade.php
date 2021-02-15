@@ -20,7 +20,8 @@
     <link href="{{ asset('css/pagination.css') }}" rel="stylesheet">
 
     @include('layouts.metrika')
-    @include('layouts.cleversite')
+{{--    @include('layouts.cleversite')--}}
+    @include('layouts.jivosite')
 </head>
 <body>
 <div id="app">
@@ -36,13 +37,13 @@
 
     @include('layouts.footer')
 </div>
-<script type="text/javascript">
-    new Vue({
-        el: '#app',
-        data: {
-            message: 'hbhhbgb'
-        }
-    })
-</script>
+{{--<script type="text/javascript">--}}
+{{--    new Vue({--}}
+{{--        el: '#app',--}}
+{{--        data: {--}}
+{{--            message: 'hbhhbgb'--}}
+{{--        }--}}
+{{--    })--}}
+{{--</script>--}}
 </body>
 </html>

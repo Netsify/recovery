@@ -236,6 +236,7 @@
           <root url="file://$MODULE_DIR$/vendor/voku/portable-ascii" />
           <root url="file://$MODULE_DIR$/vendor/webmozart/assert" />
         </CLASSES>
+        <JAVADOC />
         <SOURCES>
           <root url="file://$MODULE_DIR$/vendor/asm89/stack-cors" />
           <root url="file://$MODULE_DIR$/vendor/brick/math" />
