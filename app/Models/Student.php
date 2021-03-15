@@ -150,4 +150,14 @@ class Student extends Model
     {
         return DB::selectOne("SELECT get_group_by_student_id(?) `group`", [$this->stud_id])->group;
     }
+
+    /**
+     * Данные по оплате
+     *
+     * @return HasMany
+     */
+    public function payments() : HasMany
+    {
+        return $this->hasMany(Payment::class, 'student_id');
+    }
 }
