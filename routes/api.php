@@ -38,8 +38,4 @@ Route::group(['middleware' => "proctoring", 'prefix' => "proctoring"], function 
     Route::post('cheatings/delete', [\App\Http\Controllers\CheatingsController::class, 'delete']);
 });
 
-Route::get('test', function () {
-    return response()->json([
-        'a' => [1,2], 'b' => [3,4]
-    ]);
-});
+Route::get('/student/payment', [\App\Http\Controllers\API\PaymentController::class, 'info']);
