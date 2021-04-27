@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Proctoring\IdentificationPhoto;
+use App\Services\JWTTokenService;
 use App\Transformers\IdentificationPhotoTransformer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -72,7 +73,7 @@ class IdentificationPhotoController extends Controller
     {
         $payload = ['exp' => Carbon::now()->timestamp + 600];
 
-        $token = Token::customPayload($payload, JWTController::SECRET);
+        $token = Token::customPayload($payload, JWTTokenService::SECRET);
 
         $response = Http::withToken($token, 'JWT')
             ->get("https://proctoring.aeroexam.org/api/image-requests/kineu/$flag/$pk");
