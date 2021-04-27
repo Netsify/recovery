@@ -36,6 +36,13 @@ class JWTTokenService
 
     protected $cheating_code;
 
+    private $token;
+
+    public function __construct($token = null)
+    {
+        $this->token = $token;
+    }
+
     public function setRules(array $rules)
     {
         $this->rules = $rules;
@@ -61,5 +68,20 @@ class JWTTokenService
         ];
 
         return Token::customPayload($data, self::SECRET);
+    }
+
+    /**
+     * Возвращает payload из токена
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function decode()
+    {
+        if (!$this->token) {
+            throw new \Exception("Invalid token");
+        }
+
+        return Token::getPayload($this->token, self::SECRET);
     }
 }

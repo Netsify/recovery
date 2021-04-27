@@ -9,6 +9,7 @@ use App\Models\TestsType;
 use App\Services\JWTTokenService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use ReallySimpleJWT\Token;
 
@@ -77,12 +78,17 @@ class JWTController extends Controller
     public function decode($token)
     {
         try {
-            $payload = Token::getPayload($token, self::SECRET);
             return response()->json([
                 'status'  => 200,
-                'payload' => $payload
+                'payload' => (new JWTTokenService($token))->decode()
             ], 200);
         } catch (\Exception $e) {
+            Log::error('Произошла ошибка при попытке декодировать токен', [
+                'error' => $e->getMessage(),
+                'code'  => $e->getCode(),
+                'token' => $token
+            ]);
+
             return response()->json([
                 'status'  => 400,
                 'message' => "Bad request"
