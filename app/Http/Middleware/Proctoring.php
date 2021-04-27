@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Controllers\JWTController;
+use App\Services\JWTTokenService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -45,7 +45,7 @@ class Proctoring
         $token = explode(' ', $token)[1];
 
         try {
-            $payload = Token::getPayload($token, JWTController::SECRET);
+            $payload = Token::getPayload($token, JWTTokenService::SECRET);
 
             if (!key_exists('exp', $payload)) {
                 return false;
