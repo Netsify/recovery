@@ -38,7 +38,7 @@ class Specialty extends Model
      *
      * @return string
      */
-    public function getLanguage() : string
+    public function getLanguageAttribute() : string
     {
         return preg_match('<(каз)>ui', $this->spec_forma) ? 'kz' : 'ru';
     }

@@ -6,6 +6,7 @@ use App\Models\Predmet;
 use App\Models\Proctoring\ProctoringRule;
 use App\Models\Student;
 use App\Models\TestsType;
+use App\Services\JWTTokenService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,10 +14,7 @@ use ReallySimpleJWT\Token;
 
 class JWTController extends Controller
 {
-    const NAME   = 'kineu';
-    const SECRET = 'KInEU2020@kv';
-
-    public function makeToken(Request $request)
+    public function getToken(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'predmet' => ['required', 'integer', 'min:1'],
@@ -55,25 +53,22 @@ class JWTController extends Controller
         $carbon = Carbon::createFromFormat('H:i:s', $typeTest->time_test);
         $cheating_code = base64_encode($student_id . '_' . microtime(true) . '_' . $predmet_id);
 
-        $data = [
-            'user_id'       => $student_id,
-            'name'          => $predmet->pred_name,
-            'timeopen'      => $timeopen,
-            'timeclose'     => $timeclose,
-            'duration'      => $carbon->hour * 60 + $carbon->minute,
-            'rules'         => $this->getProctoringRules(),
-            'cheating_code' => $cheating_code,
-            'url'           => 'https://sdo.kineu.kz/newstudy/test/index.php?type=' . $type . '&disc=' . $predmet_id,
-            'submit_url'    => 'https://sdo.kineu.kz/newstudy/test/result.php',
-            'lang'          => $student->specialty->getLanguage()
-        ];
-
-        $token = Token::customPayload($data, self::SECRET);
+        $jwt_service = new JWTTokenService();
+        $jwt_service->user_id = $student_id;
+        $jwt_service->name = $predmet->pred_name;
+        $jwt_service->timeopen = $timeopen;
+        $jwt_service->timeclose = $timeclose;
+        $jwt_service->duration = $carbon->hour * 60 + $carbon->minute;
+        $jwt_service->url = "https://sdo.kineu.kz/newstudy/test/index.php?type=$type&disc=$predmet_id";
+        $jwt_service->submit_url = 'https://sdo.kineu.kz/newstudy/test/result.php';
+        $jwt_service->lang = $student->specialty->language;
+        $jwt_service->setRules($this->getProctoringRules());
+        $jwt_service->setCheatingCode($cheating_code);
 
         return response()->json(
             [
                 'status'        => 200,
-                'token'         => $token,
+                'token'         => $jwt_service->make(),
                 'cheating_code' => $cheating_code
             ],
             200);
@@ -124,25 +119,22 @@ class JWTController extends Controller
                 404);
         }
 
-        $data = [
-            'user_id'       => $student_id,
-            'name'          => "Тестирование прокторинга",
-            'timeopen'      => $timeopen,
-            'timeclose'     => $timeopen + 900, // 15 минут, Ваня, чтобы успели воткнуть всё оборудование
-            'duration'      => 1, // 1 минута, Ваня
-            'rules'         => $this->getProctoringRules(),
-            'cheating_code' => $cheating_code,
-            'url'           => 'https://sdo.kineu.kz/newstudy/test/testing_proctoring.php',
-            'submit_url'    => 'https://sdo.kineu.kz/newstudy/test/testing_proctoring.php',
-            'lang'          => $student->specialty->getLanguage()
-        ];
-
-        $token = Token::customPayload($data, self::SECRET);
+        $jwt_service = new JWTTokenService();
+        $jwt_service->user_id = $student_id;
+        $jwt_service->name = "Тестирование прокторинга";
+        $jwt_service->timeopen = $timeopen;
+        $jwt_service->timeclose = $timeopen + 900;
+        $jwt_service->duration = 1;
+        $jwt_service->url = 'https://sdo.kineu.kz/newstudy/test/testing_proctoring.php';
+        $jwt_service->submit_url = 'https://sdo.kineu.kz/newstudy/test/testing_proctoring.php';
+        $jwt_service->lang = $student->specialty->language;
+        $jwt_service->setRules($this->getProctoringRules());
+        $jwt_service->setCheatingCode($cheating_code);
 
         return response()->json(
             [
                 'status'        => 200,
-                'token'         => $token,
+                'token'         => $jwt_service->make(),
                 'cheating_code' => $cheating_code
             ],
             200);
